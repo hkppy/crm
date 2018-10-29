@@ -1,0 +1,131 @@
+{include file="public/header_js" /}
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" id="form-admin-add">
+		<input type="hidden" name="id" value="{$list.id}">
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3" style="width: 20%;"><span class="c-red">*</span>姓名：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			{$list.realname}
+		</div>
+	</div>
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3" style="width: 20%;"><span class="c-red">*</span>所属销售：</label>
+		<div class="formControls col-xs-8 col-sm-9">
+			{if $list['sell_name'] == '' }未绑定
+			{else}
+			{$list['sell_name']}
+			{/if}
+			
+		</div>
+	</div>
+	<div class="row cl" id="bott_sell">
+		<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3" style="margin-left:20%">
+			点击绑定销售
+		</div>
+	</div>
+	<div class="row cl" id="sell_lock" style="display: none" >
+		<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3" style="margin-left:20%" >
+			<input type="text" class="input-text" placeholder="输入销售ID或者昵称进行搜索" id="search_sell_id" > 
+			<!--<span class="btn btn-primary radius">搜 索</span>-->
+		</div>
+		<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3" style="margin-left:20%;margin-top: 5px;" id="resText" >
+		待选区域
+		</div>
+		
+		
+		
+	</div>
+
+	<div class="row cl">
+		<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3" style="margin-left:20%">
+			<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;修改&nbsp;&nbsp;">
+		</div>
+	</div>
+	</form>
+</article>
+
+<!--_footer 作为公共模版分离出去--> 
+{include file="public/footer_js" /} 	
+<!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="__STATIC__/lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
+<script type="text/javascript" src="__STATIC__/lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="__STATIC__/lib/jquery.validation/1.14.0/messages_zh.js"></script> 
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	
+	$("#form-admin-add").validate({
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+			$(form).ajaxSubmit({
+				type: 'post',
+				url: "{:url('sales_show_Post')}" ,
+				data: $('#form-admin-add').serialize(), //将该表单序列化
+				success: function(data){
+					console.log(data);
+					if(data.status==1){
+						layer.msg(data.msg,{icon:1,time:1000});
+					}else{
+						layer.msg(data.msg,{icon:2,time:1000});
+					}
+					},
+                error: function(XmlHttpRequest, textStatus, errorThrown){
+					layer.msg('error!',{icon:1,time:1000});
+				}
+			});
+			//var index = parent.layer.getFrameIndex(window.name);
+			//parent.$('.btn-refresh').click();
+			//parent.layer.close(index);
+		}
+	});
+});
+</script> 
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#bott_sell").click(function(){
+  $("#sell_lock").toggle();
+  });
+});
+</script>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$("#search_sell_id").keyup(function() {
+			var q=$("#search_sell_id").val()
+			console.log(q);
+			$.ajax({
+				type: 'POST',
+				url: '{:url('search_sell_id')}',
+				dataType: 'json',
+				data: {'q':q},
+				success: function(data) {
+					console.log(data);
+					
+					var list=data.data;
+					$('#resText').empty();   //清空resText里面的所有内容
+                    var html = "<input type=radio name='sell_id' id='sell_id' value='"+list.id+"'/>"+list.user_nickname; 
+   					$('#resText').html(html);
+					
+					
+				},
+				error: function(data) {
+					console.log(data.msg);
+				},
+			});
+
+			$("#search_sell_id").css("background-color", "#FFFFCC");
+		});
+	});
+</script>
+
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

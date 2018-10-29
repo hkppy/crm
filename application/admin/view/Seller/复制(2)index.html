@@ -1,0 +1,276 @@
+﻿{include file="public/header_js" /}
+<body>
+<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i> 首页 
+	{present  name="$common_column_title.one_title"}
+	<span class="c-gray en">&gt;</span> {$common_column_title.one_title}
+	{/present}
+	
+	{present  name="$common_column_title.two_title"}
+	<span class="c-gray en">&gt;</span> {$common_column_title.two_title}
+	{/present}
+	
+	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+</nav>
+<div class="page-container">
+
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> 
+		<span class="l">
+			<span >
+			全局操作  
+
+			<input class="btn btn-primary radius" type="button" value="全选">
+			<input class="btn btn-primary radius" type="button" value="反选">
+			<input class="btn btn-primary radius" type="button" value="不选">
+
+			</span>
+			{volist name="seller_level_list" id="v2"}
+				<input name="" type="checkbox" value="">{$v2.type_name}
+			{/volist}
+		
+		</span> 
+		<span class="r">共有数据：<strong>{$count}</strong> 条</span> 
+	</div>
+	<div class="mt-20">
+	<table class="table table-border table-bordered table-hover table-bg table-sort">
+
+		<thead>
+			<tr class="text-c">
+				<th width="5%">ID</th>
+				<th width="10%">用户名</th>
+				<th width="40%">微信</th>
+				<th width="40%">qq</th>
+			</tr>
+		</thead>
+
+		<tbody>
+			<tr class="text-c">
+				<td></td>
+				<td></td>
+				<td>
+				<div style="width: 100%;height: 20px;text-align: center;">
+					
+				<span><input name="weixin" type="checkbox" value="" class="weixin" />全选</span>
+				<span><input name="weixin" type="checkbox" value="" class="weixin" />反选</span>
+				
+				<span><input name="weixin" type="checkbox" value="" class="weixin" />不选</span>
+				
+				</div>
+					
+					
+					
+					
+					
+					
+				</td>
+				<td>全选反选不选 图</td>
+			</tr>
+			<tr class="text-c">
+				<td></td>
+				<td></td>
+				<td>
+				<div style="width: 100%;height: 20px;">
+				{volist name="list" id="vo"}
+				{volist name="vo['wx_seller_contact_list']" id="sub"}
+				<div style="width: 100px;float: left;height: 20px;border:1px solid #000000;margin: 2px;">
+				<p><input name="weixin" type="checkbox" value="" class="weixin" />微信</p>	
+	
+				</div>
+				{/volist}
+				{/volist}
+				</div>
+				
+				</td>
+				<td>QQ1 QQ2 QQ3 QQ4</td>
+			</tr>
+			
+			{volist name="list" id="vo"}
+
+			
+			<tr class="text-c">
+				<td>{$vo.id}</td>
+				<td>{$vo.user_login}</td>
+				<td>
+					
+				<table class="table table-border table-bordered">
+				  <thead class="text-c">
+					<tr>
+				      <th colspan="3">微信</th>
+				    </tr>
+			
+				  </thead>
+				  <tbody>
+				  	{volist name="vo['wx_seller_contact_list']" id="sub"}
+				    <tr>
+				      <td>{$sub['name']|mb_substr=0,3}</td>
+				      <td><img src='__STATIC__/{$sub.qrcode}' id="input_imgurl" style='width:20px'></td>
+				      <td><img src='__STATIC__/{$sub.qrcode}' id="input_imgurl" style='width:20px'></td>
+				    </tr>
+				   {/volist}
+				  </tbody>
+				</table>	
+					
+				<div style="width: 100%;height: 100px;">
+				{volist name="vo['wx_seller_contact_list']" id="sub"}
+				<div style="width: 100px;float: left;height: 100px;border:1px solid #000000;margin: 2px;">
+				<p>微信</p>	
+				<input name="weixin" type="checkbox" value="" class="weixin" /><img src='__STATIC__/{$sub.qrcode}' id="input_imgurl" style='width:20px'>
+				{$sub['name']|mb_substr=0,3}
+				</br>
+				{$sub.value}
+				</div>
+				{/volist}
+				</div>
+				</td>
+				
+				<td>
+				<div style="width: 100%;height: 100px;">
+				{volist name="vo['qq_seller_contact_list']" id="sub"}
+				<div style="width: 100px;float: left;height: 100px;border:1px solid #000000;">
+				<p>QQ</p>	
+				<p><input name="qq" type="checkbox" value="" class="qq" />{$sub['name']|mb_substr=0,3}：{$sub.value}</p>	
+				</div>
+				{/volist}
+				</div>
+
+			</tr>
+			{/volist}
+		</tbody>
+	</table>
+	</div>
+</div>
+<!--_footer 作为公共模版分离出去-->
+{include file="public/footer_js" /}
+<!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="__STATIC__/lib/My97DatePicker/4.8/WdatePicker.js"></script> 
+<script type="text/javascript" src="__STATIC__/lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src="__STATIC__/lib/laypage/1.2/laypage.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('.table-sort').dataTable({
+		"aaSorting": [[ 1, "desc" ]],//默认第几个排序
+		"bStateSave": true,//状态保存
+		"aoColumnDefs": [
+		  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+		  {"orderable":false,"aTargets":[0]}// 制定列不参与排序
+		]
+	});
+	
+});
+/*用户-添加*/
+function member_add(title,url,w,h){
+	layer_show(title,url,w,h);
+}
+/*用户-查看*/
+function member_show(title,url,id,w,h){
+	layer_show(title,url,w,h);
+}
+/*用户-停用*/
+function seller_show(title,url){
+	var index = layer.open({
+		type: 2,
+		title: title,
+		content: url
+	});
+	layer.full(index);
+}
+
+function member_stop(obj,id){
+	layer.confirm('确认要停用吗？',function(index){
+		//此处请求后台程序，下方是成功后的前台处理……
+		console.log(id);
+		$.ajax({
+			type: 'POST',
+			url: "{:url('post_up')}",
+			data: {'id':id},
+			dataType: 'json',
+			success: function(data){
+				console.log(data);
+				if(data.status=='1'){
+				$(obj).parents("tr").find(".td-manage").prepend("<a onClick='member_start(this,"+id+")' href='javascript:;' title='启用' style='text-decoration:none'><i class='Hui-iconfont'>&#xe615;</i></a>");
+				$(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">已禁用</span>');
+				$(obj).remove();
+				layer.msg('已停用!',{icon: 5,time:1000});
+				}else{
+					layer.msg(data.msg,{icon:2,time:1000});
+				}
+				
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});	
+
+	});
+}
+
+/*用户-启用*/
+
+function member_start(obj,id){
+	layer.confirm('确认要启用吗？',function(index){
+		$.ajax({
+			type: 'POST',
+			url: "{:url('post_do')}",
+			data: {'id':id},
+			dataType: 'json',
+			success: function(data){
+				console.log(data);
+				if(data.status=='1'){
+				//此处请求后台程序，下方是成功后的前台处理……
+				$(obj).parents("tr").find(".td-manage").prepend("<a onClick='member_stop(this,"+id+")' href='javascript:;' title='停用' style='text-decoration:none'><i class='Hui-iconfont'>&#xe631;</i></a>");
+				$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
+				$(obj).remove();
+				layer.msg('已启用!', {icon: 6,time:1000});
+				}else{
+					layer.msg(data.msg,{icon:2,time:1000});
+				}
+				
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});	
+		
+
+	});
+}
+
+
+/*用户-编辑*/
+function member_edit(title,url,id,w,h){
+	layer_show(title,url,w,h);
+}
+/*密码-修改*/
+function change_password(title,url,id,w,h){
+	layer_show(title,url,w,h);	
+}
+/*用户-删除*/
+function member_del(obj,id){
+	layer.confirm('确认要删除吗？',function(index){
+		$.ajax({
+			type: 'POST',
+			url: "{:url('delete')}",
+			data: {'id':id},
+			dataType: 'json',
+			success: function(data){
+				console.log(data);
+				if(data.status=='1'){
+					$(obj).parents("tr").remove();
+				    layer.msg(data.msg,{icon:1,time:1000});
+				}else{
+					layer.msg(data.msg,{icon:2,time:1000});
+				}
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});		
+	});
+}
+
+
+</script> 
+</body>
+</html>

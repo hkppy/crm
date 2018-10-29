@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link href="https://cdn.bootcss.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://cdn.bootcss.com/bootstrap-table/1.12.1/bootstrap-table.min.css" rel="stylesheet">
+    
+    <link href="__STATIC__/style/css/tranfer.css" rel="stylesheet">
+
+</head>
+
+<body>
+	 <div style="height: 100px;min-width: 950px;max-width: 100px;margin: auto;"></div>
+	 <div id="transferContainer" class="row" style="height: 700px;width: 950px;">
+	 	
+	 	
+	 	
+	 </div>
+    
+    <div>
+        中间点击按钮图标没显示出来没关系 是因为引入的cdn问题 正常下载引入bootstrap.css的话没问题<br> 'getData' 内置方法 selectData是获取选中的数据 后面importUnitId 是收集的字段 如果需要收集多个字段就改为数组<br> $('#transferContainer').transfer('getData', 'selectData', 'importUnitId')
+    </div>
+    <h3>数据在后台 coonsole中查看</h3>
+    <button id='btn' class="btn btn-primary">获取已选数据</button>
+    <button id='btn2' class="btn btn-primary">刷新待选数据</button>
+</body>
+
+</html>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap-table/1.12.1/locale/bootstrap-table-zh-CN.min.js"></script>
+<script src="__STATIC__/style/js/Transfer.js"></script>
+
+
+<script type="text/javascript">
+$.ajax({
+   type: "POST",
+   url: '{:url('user_json_list')}',
+   data: "name=John&location=Boston",
+   dataType:"json",
+   success: function(data){
+     console.log(data);
+      var json2 = data.data;//要传入table的数据值
+      console.log(json2);
+
+   }
+});	
+
+    var data = [{
+
+        "importUnitId": "950258484706803712",
+        "importUnitName": "分数对比2016",
+        "flag": false,
+
+    }, {
+        "importUnitId": "949202813861232640",
+        "importUnitName": "对比1",
+        "flag": false,
+    }, {
+        "importUnitId": "948380218236600320",
+        "importUnitName": "测试2",
+        "flag": false,
+    }, {
+        "importUnitId": "946590730653007872",
+        "importUnitName": "对比4",
+        "flag": false,
+    }, {
+        "importUnitId": "946590730653007889",
+        "importUnitName": "对比954",
+        "flag": true,
+    }, {
+        "importUnitId": "946590730653008647",
+        "importUnitName": "对比88",
+        "flag": true,
+    }]
+
+if(data.length>0){
+	$('#transferContainer').transfer({
+        titles: ['未选定用户', '已选定用户'],
+        search: true,
+         uniqueId: "importUnitId", //唯一id
+       dataSource: data,
+        maxSelect: 10,
+        diffKey: 'flag',
+        unselectColumns: [{
+           field: 'flag',
+           checkbox: true
+        }, {
+             field: 'importUnitName',
+            title: '用户列表'
+        }]
+    });
+    
+ 	
+}   
+    
+    $('#btn').click(function() {
+        var data = $('#transferContainer').transfer('getData', 'selectData', 'importUnitId')
+        console.log(data)
+    })
+
+    $('#btn2').click(function() {
+        $('#transferContainer').transfer('refreshLeft', data1);
+
+    })
+</script>

@@ -1,0 +1,276 @@
+{include file="public/header_js" /}
+<body>
+<article class="page-container">
+	<form action="" method="post" class="form form-horizontal" id="form-member-add">
+		
+		<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-3" style="font-weight: 700; font-family: Microsoft YaHei;">
+						<span class="c-red">*</span>
+						所属客户：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						{present name="$cid"}
+						
+						<input type="text" class="input-text" value="{$res2.realname}"  readonly="readonly" >
+						<input type="hidden"  value="{$cid}"  id="cid" name="cid" >
+						{else /}
+						<span class="select-box">
+						<select class="select" size="1" id="cid" name="cid">
+							<option value="" selected>请选择所属客户</option>
+							{volist name="$res" id="vo"}
+							<option value="{$vo.id}">{$vo.realname}</option>
+							{/volist}
+						</select>
+						</span>
+						{/present}
+					</div>
+					<div class="col-3">
+					</div>
+		</div>
+		
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3" style="font-weight: 700; font-family: Microsoft YaHei;"><span class="c-red">*</span>总金额：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="此处由系统自动结算，不用填写" readonly="readonly"  id="pay_amount" name="pay_amount">
+			</div>
+		</div>
+		
+		
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3" style="font-weight: 700; font-family: Microsoft YaHei;"><span class="c-red">*</span>收件信息：</label>
+			<div class="formControls col-xs-8 col-sm-3" >
+				<input type="text" class="input-text"  placeholder="输入姓名或者地址自动搜索" id="q" name="q" class="">
+				
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">未选中</label>
+			<div class="formControls col-xs-8 col-sm-5" >
+			<div class="input-text" id="dshjkkl"  style="overflow: auto;height: 200px;">
+				
+			</div>
+			</div>
+			
+			
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">已选中</label>
+			<div class="formControls col-xs-8 col-sm-5" >
+			<div style="overflow: auto;height: 200px;box-sizing: border-box; border: solid 1px #ddd;" id="addressxzlist" >
+				
+			</div>
+			</div>
+			
+			
+		</div>
+
+		
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3" style="font-weight: 700; font-family: Microsoft YaHei;"><span class="c-red">*</span>订单产品信息：</label>
+			<div class="formControls col-xs-8 col-sm-3">
+				<input type="text" class="input-text"  placeholder="输入商品名称进行搜索" id="g" name="g">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">未选中</label>
+			<div class="formControls col-xs-8 col-sm-5" >
+			<div class="input-text"  style="height: 150px;" id="fdkhdsjk">
+				
+			</div>
+			</div>
+			
+			
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">已选中</label>
+			<div class="formControls col-xs-8 col-sm-5" >
+			<div class="input-text"  style="height: 150px;" id="xzlist">
+				
+			</div>
+			</div>
+			
+			
+		</div>
+
+
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</article>
+
+<!--_footer 作为公共模版分离出去-->
+{include file="public/footer_js" /}
+<!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本--> 
+<script type="text/javascript" src="__STATIC__/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="__STATIC__/lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
+<script type="text/javascript" src="__STATIC__/lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="__STATIC__/lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('.skin-minimal input').iCheck({
+		checkboxClass: 'icheckbox-blue',
+		radioClass: 'iradio-blue',
+		increaseArea: '20%'
+	});
+	
+	$("#form-member-add").validate({
+		rules:{
+			q:{
+				required:true,
+				minlength:1,
+				maxlength:16
+			},
+			
+		},
+		messages: {
+			q: {
+		        required: "请输入收件人信息",
+		        minlength: "收件人信息必需由1个字母组成"
+		   },
+			
+		},	
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+			$(form).ajaxSubmit({
+				type: 'post',
+				url: "{:url('shop_addPost')}" ,
+				data: $('#form-member-add').serialize(), //将该表单序列化
+				success: function(data){
+					console.log(data);
+					if(data.status==1){
+						layer.msg(data.msg,{icon:1,time:1000});
+					}else{
+						layer.msg(data.msg,{icon:2,time:1000});
+					}
+					
+				},
+                error: function(XmlHttpRequest, textStatus, errorThrown){
+					layer.msg('error!',{icon:1,time:1000});
+				}
+			});
+			//var index = parent.layer.getFrameIndex(window.name);
+			//parent.$('.btn-refresh').click();
+			//parent.layer.close(index);
+			
+		}
+	});
+});
+</script> 
+
+<script type="text/javascript">
+	$("#q").keyup(function() {
+		var q=$("#q").val();
+		console.log(q);
+			$.ajax({
+			type: 'POST',
+			url: "{:url('goods/search_address')}",
+			data: {'q':q},
+			dataType: 'json',
+			success: function(data){
+				console.log(data);
+				if(data.status=='1'){
+					var res = data.data
+            		var len = res.length;
+            		console.log(res);
+					console.log(len);
+					console.log(data.data);
+					var cm='';
+					for(var i = 0; i < len; i++){
+						cm += "姓名："+res[i]["name"]+"&nbsp;&nbsp;电话："+res[i]["phone"]+"&nbsp;&nbsp;地址："+res[i]["address"];
+					 	cm += "&nbsp;&nbsp;<a href='javascript:void(0);' class='registerVari' onclick='js_address_add(this)' data-fruit='{name:"+res[i]["name"]+",phone:"+res[i]["phone"]+",address:"+res[i]["address"]+"}' ><i class='Hui-iconfont'>&#xe600;</i></a>";
+					 	cm += "</br>";
+					 	
+					}
+					$('#dshjkkl').html(cm);
+
+					layer.msg('查询成功!',{icon: 1,time:1000});
+				}else{
+					layer.msg(data.msg,{icon:2,time:1000});
+				}
+				
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});	
+	
+
+		
+		//$("#goods_price").css("background-color", "#FFFFCC");
+	});
+</script>
+
+<script type="text/javascript">
+	$("#g").keyup(function() {
+		var q=$("#g").val();
+		console.log(q);
+			$.ajax({
+			type: 'POST',
+			url: "{:url('goods/search_goods')}",
+			data: {'q':q},
+			dataType: 'json',
+			success: function(data){
+				console.log(data);
+				if(data.status=='1'){
+					var res = data.data
+            		var len = res.length;
+            		console.log(res);
+					console.log(len);
+					console.log(data.data);
+					var cm='';
+					for(var i = 0; i < len; i++){
+						cm += "姓名："+res[i]["name"]+"&nbsp;&nbsp;电话："+res[i]["phone"]+"&nbsp;&nbsp;地址："+res[i]["address"];
+					 	cm += "&nbsp;&nbsp;<a href='javascript:void(0);' class='registerVari' onclick='js_goods_add(this)' data-fruit='{name:"+res[i]["name"]+",phone:"+res[i]["phone"]+",address:"+res[i]["address"]+"}' ><i class='Hui-iconfont'>&#xe600;</i></a>";
+					 	cm += "</br>";
+					 	
+					}
+					$('#fdkhdsjk').html(cm);
+
+					layer.msg('查询成功!',{icon: 1,time:1000});
+				}else{
+					layer.msg(data.msg,{icon:2,time:1000});
+				}
+				
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});	
+	
+
+		
+		//$("#goods_price").css("background-color", "#FFFFCC");
+	});
+</script>
+<script type="text/javascript">
+function js_address_add(obj){
+	console.log(obj);
+	console.log(obj.getAttribute('data-fruit'))
+	var list=obj.getAttribute('data-fruit');
+	var html="<a href='javascript:void(0);' class='registerVari' onclick='js_del(this)'><input type='text' style='font-size:12px;wdith:300px;' name='goods_list[]' value='"+list+"'><i class='Hui-iconfont'>&#xe6a1;</i></a>";
+	$("#addressxzlist").append(html);
+}
+</script>
+
+<script type="text/javascript">
+function js_goods_add(obj){
+	console.log(obj);
+	console.log(obj.getAttribute('data-fruit'))
+	var list=obj.getAttribute('data-fruit');
+	var html="<a href='javascript:void(0);' class='registerVari' onclick='js_del(this)'><input type='text' style='font-size:12px;wdith:300px;' name='goods_list[]' value='"+list+"'><i class='Hui-iconfont'>&#xe6a1;</i></a>";
+	$("#xzlist").append(html);
+}
+</script>
+
+
+
+
+<!--/请在上方写此页面业务相关的脚本-->
+</body>
+</html>

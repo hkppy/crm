@@ -1,0 +1,419 @@
+﻿{include file="public/header_js" /}
+<body>
+<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i> 首页 
+	{present  name="$common_column_title.one_title"}
+	<span class="c-gray en">&gt;</span> {$common_column_title.one_title}
+	{/present}
+	
+	{present  name="$common_column_title.two_title"}
+	<span class="c-gray en">&gt;</span> {$common_column_title.two_title}
+	{/present}
+	
+	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+</nav>
+<div class="page-container">
+
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> 
+		<span class="l">
+			全局操作
+		<input class="btn btn-primary radius" type="button" name="btn1" value="全选">
+		<input class="btn btn-primary radius" type="button" name="btn2" value="反选">
+		<input class="btn btn-primary radius" type="button" name="btn3" value="不选">
+		{volist name="seller_level_list" id="vbc"}
+		<input class="btn btn-default radius size-MINI radius" type="checkbox" data-id = "{$vbc.id}"  name="gbtn[]" value="{$vbc.type_name}">{$vbc.type_name}
+
+		{/volist}
+		<!--<a href="javascript:;" onclick="member_add('添加销售账户','{:url('add')}','800','600')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加销售账户</a>-->
+	</span> 
+		<span class="r">共有数据：<strong>{$count}</strong> 条</span> </div>
+	<div class="mt-20">
+	<form action="{:url('seller_status_editPost')}" method="post"  id="form-member-add" enctype="multipart/form-data">
+	<table class="table table-border table-bordered table-hover table-bg table-sort">
+		
+		
+
+		<thead>
+			<tr class="text-c">
+	
+				<th width="30">用户名</th>
+				<th width="50">微信昵称</th>
+				<th width="30">微信号</th>
+				<th width="20"><input type="checkbox" name="weixin1-btn1"  class="weixin1-btn1">在线</th>
+				
+				<th width="50">昵称1</th>
+				<th width="30">QQ1</th>
+				<th width="20"><input type="checkbox" name="qq1-btn1"  class="qq1-btn1">在线</th>
+				
+				<th width="50">昵称2</th>
+				<th width="30">QQ2</th>
+				<th width="20"><input type="checkbox" name="qq2-btn1"  class="qq2-btn1">在线</th>
+				
+				<th width="50">昵称3</th>
+				<th width="30">QQ3</th>
+				<th width="20"><input type="checkbox" name="qq3-btn1"  class="qq3-btn1">在线</th>
+
+			</tr>
+		</thead>
+		<tbody>
+			{volist name="list" id="vo"}
+			<tr class="text-c">
+
+				<td>{$vo.user_login}</td>
+
+				{notempty name="vo['wx_seller_contact_list']"}
+				
+				
+				{volist name="vo['wx_seller_contact_list']" id="sub"}
+
+				<td>{$sub['name']|mb_substr=0,3}</td>
+				<td>{notempty name="$sub.qrcode"}<img src='__STATIC__/{$sub.qrcode}' id="input_imgurl" style='width:20px'>{/notempty}{$sub['value']|mb_substr=0,11}</td>
+				<td><input type="checkbox" name="wq[]" value="{$sub['id']}"  data-ids ="{$vo.group_ids}"    {eq name="$sub['online']" value="1"}checked="checked"{/eq} class="wx1"></td>
+				
+				{/volist}
+				{else /}
+				<td>无</td>
+				<td>无</td>
+				<td>无</td>
+				{/notempty}
+				
+				
+		
+				{switch vo['qq_seller_contact_list']|count}
+				    {case 1 }
+				    {volist name="vo['qq_seller_contact_list']" id="suc"}
+
+					<td>{$suc['name']|mb_substr=0,3}</td>
+					<td>{$suc['value']|mb_substr=0,11}</td>
+					<td><input type="checkbox" class="qq{$i}" data-ids ="{$vo.group_ids}" {eq name="$suc['online']" value="1"}checked="checked"{/eq} value="{$suc['id']}" name="wq[]"></td>
+					<td>无</td>
+					<td>无</td>
+					<td>无</td>
+		
+					<td>无</td>
+					<td>无</td>
+					<td>无</td>
+		
+					{/volist}
+				    
+				    
+				    
+				    
+				    {/case}
+				    {case 2}
+				    
+				    {volist name="vo['qq_seller_contact_list']" id="suc"}
+
+					<td>{$suc['name']|mb_substr=0,3}</td>
+					<td>{$suc['value']|mb_substr=0,11}</td>
+					<td><input type="checkbox" class="qq{$i}" data-ids ="{$vo.group_ids}" {eq name="$suc['online']" value="1"}checked="checked"{/eq} value="{$suc['id']}" name="wq[]"></td>
+
+					<td>无</td>
+					<td>无</td>
+					<td>无</td>
+
+					{/volist}
+				    
+				    
+				    
+				    {/case}
+				    {case 3}
+				    
+				    {volist name="vo['qq_seller_contact_list']" id="suc"}
+
+					<td>{$suc['name']|mb_substr=0,3}</td>
+					<td>{$suc['value']|mb_substr=0,11}</td>
+					<td><input type="checkbox" class="qq{$i}" data-ids ="{$vo.group_ids}" {eq name="$suc['online']" value="1"}checked="checked"{/eq} value="{$suc['id']}" name="wq[]"></td>
+
+		
+					{/volist}
+				    {/case}
+				    {default /}
+				    <td>无</td>
+					<td>无</td>
+					<td>无</td>
+		
+					<td>无</td>
+					<td>无</td>
+					<td>无</td>
+				    <td>无</td>
+					<td>无</td>
+					<td>无</td>
+				    
+				    
+				    
+				{/switch}
+				
+				
+
+				
+
+			</tr>
+			{/volist}
+			
+		</tbody>
+		
+	</table>
+	<table class="table table-border table-bordered table-striped">
+		<tbody>
+		<tr class="text-r" style="padding-right: 20px;">
+				<td colspan="16"><input class="btn btn-primary size-M radius" name="sub1" type="button" value="提交"></td>
+		</tr>
+		</tbody>
+	</table>
+	</form>
+	</div>
+</div>
+<!--_footer 作为公共模版分离出去-->
+{include file="public/footer_js" /}
+<!--/_footer 作为公共模版分离出去-->
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="__STATIC__/lib/My97DatePicker/4.8/WdatePicker.js"></script> 
+<script type="text/javascript" src="__STATIC__/lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src="__STATIC__/lib/laypage/1.2/laypage.js"></script>
+<script type="text/javascript">
+$(function(){
+	$('.table-sort').dataTable({
+		"bSort": false
+	});
+	
+});
+/*用户-添加*/
+function member_add(title,url,w,h){
+	layer_show(title,url,w,h);
+}
+/*用户-查看*/
+function member_show(title,url,id,w,h){
+	layer_show(title,url,w,h);
+}
+/*用户-停用*/
+function seller_show(title,url){
+	var index = layer.open({
+		type: 2,
+		title: title,
+		content: url
+	});
+	layer.full(index);
+}
+
+function member_stop(obj,id){
+	layer.confirm('确认要停用吗？',function(index){
+		//此处请求后台程序，下方是成功后的前台处理……
+		console.log(id);
+		$.ajax({
+			type: 'POST',
+			url: "{:url('post_up')}",
+			data: {'id':id},
+			dataType: 'json',
+			success: function(data){
+				console.log(data);
+				if(data.status=='1'){
+				$(obj).parents("tr").find(".td-manage").prepend("<a onClick='member_start(this,"+id+")' href='javascript:;' title='启用' style='text-decoration:none'><i class='Hui-iconfont'>&#xe615;</i></a>");
+				$(obj).parents("tr").find(".td-status").html('<span class="label label-default radius">已禁用</span>');
+				$(obj).remove();
+				layer.msg('已停用!',{icon: 5,time:1000});
+				}else{
+					layer.msg(data.msg,{icon:2,time:1000});
+				}
+				
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});	
+
+	});
+}
+
+/*用户-启用*/
+
+function member_start(obj,id){
+	layer.confirm('确认要启用吗？',function(index){
+		$.ajax({
+			type: 'POST',
+			url: "{:url('post_do')}",
+			data: {'id':id},
+			dataType: 'json',
+			success: function(data){
+				console.log(data);
+				if(data.status=='1'){
+				//此处请求后台程序，下方是成功后的前台处理……
+				$(obj).parents("tr").find(".td-manage").prepend("<a onClick='member_stop(this,"+id+")' href='javascript:;' title='停用' style='text-decoration:none'><i class='Hui-iconfont'>&#xe631;</i></a>");
+				$(obj).parents("tr").find(".td-status").html('<span class="label label-success radius">已启用</span>');
+				$(obj).remove();
+				layer.msg('已启用!', {icon: 6,time:1000});
+				}else{
+					layer.msg(data.msg,{icon:2,time:1000});
+				}
+				
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});	
+		
+
+	});
+}
+
+
+/*用户-编辑*/
+function member_edit(title,url,id,w,h){
+	layer_show(title,url,w,h);
+}
+/*密码-修改*/
+function change_password(title,url,id,w,h){
+	layer_show(title,url,w,h);	
+}
+/*用户-删除*/
+function member_del(obj,id){
+	layer.confirm('确认要删除吗？',function(index){
+		$.ajax({
+			type: 'POST',
+			url: "{:url('delete')}",
+			data: {'id':id},
+			dataType: 'json',
+			success: function(data){
+				console.log(data);
+				if(data.status=='1'){
+					$(obj).parents("tr").remove();
+				    layer.msg(data.msg,{icon:1,time:1000});
+				}else{
+					layer.msg(data.msg,{icon:2,time:1000});
+				}
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});		
+	});
+}
+
+
+</script> 
+
+
+<script type="text/javascript">     
+    $(function() {
+    	//全局操作全选
+        $("input[name='btn1']").on('click',function(){
+        	$("input").each(function(){
+			$("input").prop('checked',true);
+			});
+        });
+        //全局操作反选
+        $("input[name='btn2']").on('click',function(){
+        	$("input").each(function(){
+        	$(this).prop('checked',!$(this).prop('checked'));
+			
+			});
+        });
+        //全局操作不选
+        $("input[name='btn3']").on('click',function(){
+        	$("input").each(function(){
+			$("input").prop('checked',false);
+			});
+        });
+        
+     }); 
+</script>
+
+<script type="text/javascript">     
+    $(function() {
+    	//全局操作全选
+        $("input[name='gbtn[]']").on('click',function(){
+        	$("input[name='wq[]']").prop("checked",false);
+        	var id=$(this).attr('data-id');
+        	console.log(id);
+          	var userids=this.checked;
+          	$("input[name='wq[]']").each(function(id){
+        		var ids=$(this).attr('data-ids');
+        		console.log(ids);
+        		if(ids.indexOf(id)>='0'){
+        			this.checked=userids;
+        		}
+        	
+			});
+        });  
+     }); 
+</script>
+
+<script type="text/javascript">     
+        $(".weixin1-btn1").click(function(){
+            // this 全选的复选框
+             var userids=this.checked;
+            //获取name=box的复选框 遍历输出复选框
+             $(".wx1").each(function(){
+                 this.checked=userids;
+             });
+        });
+        
+        $(".qq1-btn1").click(function(){
+            // this 全选的复选框
+             var userids=this.checked;
+            //获取name=box的复选框 遍历输出复选框
+             $(".qq1").each(function(){
+                 this.checked=userids;
+             });
+        });
+        
+        $(".qq2-btn1").click(function(){
+            // this 全选的复选框
+             var userids=this.checked;
+            //获取name=box的复选框 遍历输出复选框
+             $(".qq2").each(function(){
+                 this.checked=userids;
+             });
+        });        
+        
+         $(".qq3-btn1").click(function(){
+            // this 全选的复选框
+             var userids=this.checked;
+            //获取name=box的复选框 遍历输出复选框
+             $(".qq3").each(function(){
+                 this.checked=userids;
+             });
+        });            
+</script>
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">     
+    $(function() {
+
+        //ajax更新状态
+        $("input[name='sub1']").on('click',function(){
+        	$('#form-member-add').serialize(), //将该表单序列化
+        	console.log($('#form-member-add').serialize());
+        	$.ajax({
+			type: 'POST',
+			url: "{:url('seller_status_editPost')}",
+			data: $('#form-member-add').serialize(), //将该表单序列化
+			dataType: 'json',
+			success: function(data){
+				console.log(data);
+				if(data.status=='1'){
+				    layer.msg(data.msg,{icon:1,time:1000});
+				}else{
+					layer.msg(data.msg,{icon:2,time:1000});
+				}
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+			});	
+	        });
+        
+     }); 
+</script>
+
+
+</body>
+</html>

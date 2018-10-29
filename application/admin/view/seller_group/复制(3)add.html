@@ -1,0 +1,133 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit|ie-comp|ie-stand">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" >
+<link rel="Shortcut Icon" href="/favicon.ico" />
+<title>添加分组</title>
+<link rel="stylesheet" type="text/css" href="__STATIC__/style/css/style.css">
+{include file="public/header_js" /}
+</head>
+<body>
+<article class="page-container">
+	<form action="" method="post" class="form form-horizontal" id="form-member-add">
+	
+	
+			<div class="row cl" >
+			<label class="form-label col-xs-4 col-sm-3" style="width:20%;text-align: right;">
+						<span class="c-red">*</span>
+						上级分组：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span class="select-box">
+						<select class="select" id="parent_id" name="parent_id" >
+							<option value="0">顶级分类</option>
+							{volist name="$list" id="vo"}
+							<option value="{$vo.id}">{$vo.type_name}</option>
+							{/volist}
+						</select>
+						</span>
+					</div>
+					<div class="col-3">
+					</div>
+		</div>
+	
+
+
+<div class="row cl" >
+	
+<div class="ty-transfer mt20 ml20" id="ued-transfer-1" style="margin-left: 22%;" >
+    <div class="fl ty-transfer-list transfer-list-left">
+        <div class="ty-transfer-list-head">
+           	未选中用户列表
+        </div>
+        
+        <div class="ty-transfer-list-body">
+            <ul class="ty-tree-select">
+            	{foreach $data as $key=>$vo } 
+                <li>
+                    <div class="ty-tree-div">
+                        <label class="tyue-checkbox-wrapper">
+                            <span class="tyue-checkbox-txt" title="{$vo.name}" >
+                                {$vo.name}
+                            </span>
+                        </label>
+                    </div>
+                </li>
+				{/foreach}
+                
+            </ul>
+        </div>
+        <div class="ty-transfer-list-foot">
+            <div class="ty-tree-div">
+                <div class="tyc-check-blue fl">
+                    <input type="checkbox" class="transfer-all-check" id="tyc-check-blue">
+                    <span>
+                    </span>
+                </div>
+                <div class="ty-tree-text">
+                    全选
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="fl ty-transfer-operation">
+        <span class="ty-transfer-btn-toright to-switch">
+        </span>
+        <span class="ty-transfer-btn-toleft to-switch">
+        </span>
+    </div>
+    <div class="fl ty-transfer-list transfer-list-right">
+        <div class="ty-transfer-list-head">
+            已选中用户列表
+        </div>
+        <div class="ty-transfer-list-body">
+            <ul class="ty-tree-select">
+                <li>
+
+            </ul>
+        </div>
+        <div class="ty-transfer-list-foot">
+            <div class="ty-tree-div">
+                <div class="tyc-check-blue fl">
+                    <input type="checkbox" class="transfer-all-check" id="tyc-check-blue">
+                    <span>
+                    </span>
+                </div>
+                <div class="ty-tree-text">
+                   		全选
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="clearboth">
+    </div>
+            
+</div>
+		</div>
+			<div class="row cl" style="margin-left: 20%; margin-top: 20px;">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3" style="margin-left: 0%;">
+				<input class="btn btn-primary radius" type="button" id="btn2" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			</div>
+		</div>
+		</form>
+</article>     
+<!--过滤筛选 end-->
+
+<script type="text/javascript" src="__STATIC__/style/js/jquery.min.js"></script>
+<script type="text/javascript" src="__STATIC__/style/js/Transfer.js"></script>
+<script type="text/javascript">
+	$("#ued-transfer-1").transferItem();
+</script>
+<script>
+	$("#btn2").click(function() {
+		console.log($('#form-member-add').serialize());
+	});
+</script>
+
+
+</body>
+</html>

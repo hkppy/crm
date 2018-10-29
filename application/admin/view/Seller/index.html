@@ -1,0 +1,238 @@
+﻿{include file="public/header_js" /}
+<body>
+<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i> 首页 
+	{present  name="$common_column_title.one_title"}
+	<span class="c-gray en">&gt;</span> {$common_column_title.one_title}
+	{/present}
+	
+	{present  name="$common_column_title.two_title"}
+	<span class="c-gray en">&gt;</span> {$common_column_title.two_title}
+	{/present}
+	
+	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+</nav>
+<div class="page-container">
+
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> 
+		<span class="l">
+			全局操作
+		<input class="btn btn-primary radius" type="button" name="btn1" value="全选">
+		<input class="btn btn-primary radius" type="button" name="btn2" value="反选">
+		<input class="btn btn-primary radius" type="button" name="btn3" value="不选">
+	</span> 
+		<span class="r">共有数据：<strong>{$count}</strong> 条</span> 
+	</div>
+	<div class="mt-20">
+		<form action="{:url('seller_status_editPost')}" method="post"  id="form-member-add" enctype="multipart/form-data">
+		<table class="table table-border table-bordered table-bg table-sort">
+			<thead>
+				<tr class="text-l">
+					<th width="10">ID</th>
+					<th width="30">用户名</th>
+					<th width="200">微信   
+						<input type="button" name="weixin1-btn1"  class="weixin1-btn1" style="width: 40px;color: #fff; background-color: #3bb4f2; border-color: #3bb4f2;border-radius: 5px;" value="全选">
+						<input type="button" name="weixin2-btn2"  class="weixin2-btn2" style="width: 40px;color: #fff; background-color: #3bb4f2; border-color: #3bb4f2;border-radius: 4px;" value="反选"> 
+						<input type="button" name="weixin3-btn3"  class="weixin3-btn3" style="width: 40px;color: #fff; background-color: #3bb4f2; border-color: #3bb4f2;border-radius: 4px;" value="不选">
+					</th>
+					<th width="200">QQ   
+						<input type="button" name="qq1-btn1"  class="qq1-btn1" style="width: 40px;color: #fff; background-color: #3bb4f2; border-color: #3bb4f2;border-radius: 4px;" value="全选">
+					 	<input type="button" name="qq2-btn2"  class="qq2-btn2" style="width: 40px;color: #fff; background-color: #3bb4f2; border-color: #3bb4f2;border-radius: 4px;" value="反选">
+					 	<input type="button" name="qq3-btn3"  class="qq3-btn3" style="width: 40px;color: #fff; background-color: #3bb4f2; border-color: #3bb4f2;border-radius: 4px;" value="不选">
+					 </th>
+
+				</tr>
+			</thead>
+			<tbody>
+			{volist name="list" id="vo"}
+				<tr class="text-l">
+					<td>{$vo.id}</td>
+					<td>{$vo.user_login}</td>
+					<td>				
+					{volist name="vo['wx_seller_contact_list']" id="sub"}
+					
+					<div style="display:inline;width: 120px;min-height: 60px;">
+					<div style="width: 120px;height: 60px;border: solid 1px #ddd;margin-top: 2px;float: left;margin-left: 2px;position:relative;">	
+		
+					 	
+					 	<div style="float: left;width: 20px;height: 60px;text-align: center;line-height: 60px;">
+					 		<input type="checkbox" class="wx" value="{$sub['id']}" name="wq[]" {eq name="$sub['online']" value="1"}checked="checked"{/eq} />
+					 	</div>
+					 	<div style="float: left;width: 100px;line-height: 20px;padding: 10px 0 10px 0;">
+					 		<div class="text-l">{$sub['name']|mb_substr=0,8}</div>
+					 		<div class="text-l">{$sub['value']|mb_substr=0,8}</div>
+					 	</div>
+						{notempty name="$sub.qrcode"}
+					 	<div style="width:20px; border-radius:60%; position:absolute; right:0px; top:-5px;">
+						<img src='__STATIC__/{$sub.qrcode}' id="input_imgurl" style='width:20px'>
+						</div>
+					 	{/notempty}	
+					</div>
+					</div>
+					{/volist}
+					</td>
+					<td class="text-l">
+						{volist name="vo['qq_seller_contact_list']" id="suc"}
+					<div style="display:inline;width: 120px;min-height: 60px;">
+		
+					<div style="width: 120px;min-height: 60px;border: solid 1px #ddd;margin-top: 2px;float: left;margin-left: 2px;position:relative;">	
+						<div style="float: left;width: 20px;height: 60px;text-align: center;line-height: 60px;">
+					 		<input type="checkbox" class="qq" value="{$suc['id']}" name="wq[]" {eq name="$suc['online']" value="1"} checked="checked" {/eq} />
+					 	</div>
+					 	<div style="float: left;width: 100px;line-height: 20px;padding: 10px 0 10px 0;">
+					 		<div class="text-l">{$suc['name']|mb_substr=0,8}</div>
+					 		<div class="text-l">{$suc['value']|mb_substr=0,10}</div>
+					 	</div>
+					 	{notempty name="$suc.qrcode"}
+					 	<div style="width:20px; border-radius:60%; position:absolute; right:0px; top:-5px;">
+						<img src='__STATIC__/{$suc.qrcode}' id="input_imgurl" style='width:20px;'>
+						</div>
+					 	{/notempty}
+					 	
+					</div>
+					
+
+					
+					
+					</div>
+					{/volist}
+					</td>
+					</tr>
+				{/volist}
+			</tbody>
+		</table>
+
+
+		<table class="table table-border table-bordered table-striped">
+		<tbody>
+		<tr class="text-r" style="padding-right: 20px;margin-top: 10px">
+				<td colspan="16"><input class="btn btn-primary size-M radius" name="sub1" type="button" value="提交"></td>
+		</tr>
+		</tbody>
+		</table>
+	</div>
+	</form>
+</div>
+{include file="public/footer_js" /}
+
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="__STATIC__/lib/My97DatePicker/4.8/WdatePicker.js"></script> 
+<script type="text/javascript" src="__STATIC__/lib/datatables/1.10.0/jquery.dataTables.min.js"></script> 
+<script type="text/javascript" src="__STATIC__/lib/laypage/1.2/laypage.js"></script>
+
+
+<script type="text/javascript">
+$(function(){
+	$('.table-sort').dataTable({
+		"paging": false, // 禁止分页
+		"aaSorting": [[ 1, "desc" ]],//默认第几个排序
+		"aoColumnDefs": [
+	  {"orderable":false,"aTargets":[0,2,3]}// 不参与排序的列
+	]
+	});
+});
+
+
+
+    $(function() {
+    	//全局操作全选
+        $("input[name='btn1']").on('click',function(){
+        	$("input").each(function(){
+			$("input").prop('checked',true);
+			});
+        });
+        //全局操作反选
+        $("input[name='btn2']").on('click',function(){
+        	$("input").each(function(){
+        	$(this).prop('checked',!$(this).prop('checked'));
+			
+			});
+        });
+        //全局操作不选
+        $("input[name='btn3']").on('click',function(){
+        	$("input").each(function(){
+			$("input").prop('checked',false);
+			});
+        });
+        
+     }); 
+</script>
+
+<script type="text/javascript">
+
+		//weixin操作全选
+		$("input[name='weixin1-btn1']").on('click',function(){
+			$(".wx").each(function(){
+        	$(this).prop("checked",true);
+			});
+		});
+
+        //wx操作反选
+        $("input[name='weixin2-btn2']").on('click',function(){
+        	$(".wx").each(function(){
+        	$(this).prop('checked',!$(this).prop('checked'));
+			});
+        });
+
+        //wx操作不选
+        $("input[name='weixin3-btn3']").on('click',function(){
+        	$(".wx").each(function(){
+			$(".wx").prop('checked',false);
+			});
+        });
+
+
+
+        //qq操作全选
+        $("input[name='qq1-btn1']").on('click',function(){
+        	$(".qq").each(function(){
+        	$(this).prop("checked",true);
+			});
+        });
+
+        //qq操作反选
+        $("input[name='qq2-btn2']").on('click',function(){
+        	$(".qq").each(function(){
+        	$(this).prop('checked',!$(this).prop('checked'));
+			
+			});
+        });
+
+        //qq操作不选
+        $("input[name='qq3-btn3']").on('click',function(){
+        	$(".qq").each(function(){
+			$(".qq").attr("checked",false);
+			});
+        });
+                  
+</script>
+<script type="text/javascript">     
+    $(function() {
+
+        //ajax更新状态
+        $("input[name='sub1']").on('click',function(){
+        	$('#form-member-add').serialize(), //将该表单序列化
+        	console.log($('#form-member-add').serialize());
+        	$.ajax({
+			type: 'POST',
+			url: "{:url('seller_status_editPost')}",
+			data: $('#form-member-add').serialize(), //将该表单序列化
+			dataType: 'json',
+			success: function(data){
+				console.log(data);
+				if(data.status=='1'){
+				    layer.msg(data.msg,{icon:1,time:1000});
+				}else{
+					layer.msg(data.msg,{icon:2,time:1000});
+				}
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+			});	
+	        });
+        
+     }); 
+</script>
+</body>
+</html>

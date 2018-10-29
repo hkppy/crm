@@ -1,0 +1,177 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+</script>
+<link rel="stylesheet" href="__STATIC__/layui/css/layui.css">
+
+<style>
+	body {
+    font-family: "Helvetica Neue",Helvetica,"Microsoft YaHei",Arial,sans-serif;
+    margin: 0;
+    font-size: 0.9rem;
+    background-color: #f9f9f9;
+    color: #4E546B;
+}
+	*{margin:0;}
+.content{
+	width: 1000px;margin: auto;min-height: 120px;line-height: 44px;text-align: center;border-bottom: 1px solid #c8c8c8;border-left: 1px solid #c8c8c8;border-right: 1px solid #c8c8c8;
+}	
+	
+.divq{
+	width: 20%;float: left;min-height: 800px;border: 1px solid #c8c8c8;
+}	
+.container{
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+    border-left: 1px solid #c8c8c8;
+    
+}
+.container .item{
+    display:inline-block;
+    box-sizing: border-box;
+    width:200px;
+    height: 100px;
+    text-align: center;
+    border-right: 1px solid #c8c8c8;
+}
+.acontainer{
+    width: 100%;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+.acontainer .aitem{
+    display:inline-block;
+    box-sizing: border-box;
+    width:200px;
+    
+}
+.ddsl{
+	width: 33%;float: left;border-right: 1px solid #c8c8c8;
+}
+.ddsl-1{
+	width: 33%;float: left;
+}
+.a{
+	height: 120px;
+}
+.jkdkj{
+	width: 38%;float: left;min-height: 800px;
+}
+.item1{
+	width: 200px;height: 50px;text-align: center;line-height: 50px;
+	border-bottom: 1px solid #c8c8c8;
+	
+}
+.item2{
+	width: 200px;height: 50px;line-height: 44px;
+}
+
+.item2-1{
+	width: 33%;height: 50px;float: left;
+}
+.dssdjk{
+	width: 1000px;margin: auto;height: 44px;line-height: 44px;text-align: center;border-top: 1px solid #c8c8c8;border-left: 1px solid #c8c8c8;border-right: 1px solid #c8c8c8;
+}
+</style>
+
+</head>
+<body>
+	<div style="padding: 20px;">
+	<div style="width: 1000px;margin: auto;height: 44px;line-height: 44px;">
+		<input name="weixin" type="checkbox" value="" class="weixin" />全选 
+		<input name="weixin" type="checkbox" value="" class="weixin" />反选 
+		<input name="weixin" type="checkbox" value="" class="weixin" /> 不选
+	</div>
+	<div style="" class="dssdjk">
+		<div class="ddsl"> &nbsp;&nbsp;</div>
+		<div class="ddsl"><input name="weixin" type="checkbox" value="" class="weixin" />全选 
+		<input name="weixin" type="checkbox" value="" class="weixin" />反选 
+		<input name="weixin" type="checkbox" value="" class="weixin" />不选</div>
+		<div class="ddsl-1">
+			<input name="weixin" type="checkbox" value="" class="weixin" />全选 
+			<input name="weixin" type="checkbox" value="" class="weixin" />反选 
+			<input name="weixin" type="checkbox" value="" class="weixin" />不选</div>
+
+	</div>
+	
+	
+	
+	
+	<div style="width: 1000px;margin: auto;height: 44px;line-height: 44px;text-align: center;border: 1px solid #c8c8c8;">
+		<div class="ddsl">
+		<div class="ddsl">ID</div>
+		<div class="ddsl">用户名</div>
+		<div style="width:33%;float: left;">其他</div>
+		</div>
+		<div class="ddsl"><input name="weixin" type="checkbox" value="" class="weixin" />微信1 
+			<input name="weixin" type="checkbox" value="" class="weixin" />微信2
+			<input name="weixin" type="checkbox" value="" class="weixin" /> 微信3</div>
+		<div class="ddsl-1"><input name="weixin" type="checkbox" value="" class="weixin" />QQ1 
+		<input name="weixin" type="checkbox" value="" class="weixin" />QQ2 
+		<input name="weixin" type="checkbox" value="" class="weixin" />QQ3</div>
+		
+	</div>
+	{volist name="list" id="vo"}
+	<div class="content">
+		<div style="width:33%;float: left;height: 120px;">
+		<div class="ddsl a" >{$vo.id}</div>
+		<div class="ddsl a" >{$vo.user_login}</div>
+		<div class="ddsl-1" >未定义</div>
+		</div>
+		<div style="width:33%;float: left;">
+			
+		<div class="container">
+		{volist name="vo['wx_seller_contact_list']" id="sub"}
+		{present name="vo['wx_seller_contact_list']"}
+		<div  class="item">	
+		<div style="" class="item1">	
+			<input name="weixin" type="checkbox" value="" class="weixin" />微信:{$sub['id']}
+		</div>		
+		<div  class="item2">	
+		<div class="item2-1">
+			<input name="weixin" type="checkbox" value="" class="weixin" />{$sub['name']|mb_substr=0,3}</div>
+		<div class="item2-1">
+			{present name="$sub['qrcode']"}
+			<img src='__STATIC__/{$sub.qrcode}' id="input_imgurl" style='width:20px'>
+			{/present}
+			{$sub['value']}
+		</div>
+		<div class="item2-1">其他</div>
+		</div>	
+		</div>
+		{/present}
+		{/volist}
+		
+		</div>	
+		</div>
+		
+		
+		
+		<div style="width:33%;float: left;">
+		<div class="container">
+		{volist name="vo['qq_seller_contact_list']" id="sub"}
+		<div  class="item">	
+		<div style="" class="item1">	
+			<input name="weixin" type="checkbox" value="" class="weixin" />QQ:{$sub['id']}
+		</div>		
+		<div  class="item2">	
+		<div class="item2-1"><input name="weixin" type="checkbox" value="" class="weixin" />{$sub['name']|mb_substr=0,3}</div>
+		<div class="item2-1">{$sub['value']|mb_substr=0,11}</div>
+		<div class="item2-1">其他</div>
+		</div>	
+		</div>
+		{/volist}
+		
+		</div>	
+			
+		</div>
+		
+	</div>
+	{/volist}
+	</div>
+</body>
+</html>

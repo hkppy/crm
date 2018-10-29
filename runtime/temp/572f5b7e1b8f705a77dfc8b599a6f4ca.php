@@ -1,0 +1,84 @@
+<?php /*a:1:{s:73:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\api\view\demo\ajax.html";i:1539421872;}*/ ?>
+<!DOCTYPE html>
+<html class="ui-page-login">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/mui/3.7.1/css/mui.css" rel="stylesheet">
+		<style>
+			.area {
+				margin: 20px auto 0px auto;
+			}
+			.mui-input-group:first-child {
+				margin-top: 20px;
+			}
+			.mui-input-group label {
+				width: 22%;
+			}
+			.mui-input-row label~input,
+			.mui-input-row label~select,
+			.mui-input-row label~textarea {
+				width: 78%;
+			}
+			.mui-checkbox input[type=checkbox],
+			.mui-radio input[type=radio] {
+				top: 6px;
+			}
+			.mui-content-padded {
+				margin-top: 25px;
+			}
+			.mui-btn {
+				padding: 10px;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">客户查询</h1>
+		</header>
+		<div class="mui-content">
+			<form class="mui-input-group">
+				<div class="mui-input-row">
+					<label>关键字</label>
+					<input id='q' name="q" value="434922813"  type="text" class="mui-input-clear mui-input" placeholder="请输入QQ/微信/手机号">
+				</div>
+
+			</form>
+			<div class="mui-content-padded">
+				<button id='btn' class="mui-btn mui-btn-block mui-btn-primary">搜索</button>
+			</div>
+			<div class="mui-content-padded">
+				<p>注册真实可用，注册成功后的用户可用于登录，但是示例程序并未和服务端交互，用户相关数据仅存储于本地。</p>
+			</div>
+		</div>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/layer/2.3/layer.js"></script>
+		
+
+	</body>
+
+</html>
+<script>
+	$("#btn").click(function() {
+		console.log($("#q").val());
+		$.ajax({
+			type: "POST",
+			url: "<?php echo url('index/lists'); ?>",
+			data: {
+				q: $("#q").val(),
+				content: $("#content").val()
+			},
+			dataType: "json",
+			success: function(data) {
+
+				layer.msg(data.msg);
+				console.log(data);
+			}
+		});
+	});
+</script>

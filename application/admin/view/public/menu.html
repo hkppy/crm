@@ -1,0 +1,21 @@
+<aside class="Hui-aside">
+	<div class="menu_dropdown bk_2">
+
+	{volist name="$common_list" id="vo"}
+	{in name="$vo['id']" value="$role_user_list['ids']"}
+	<dl id="{$vo.style_id}">
+			<dt><i class="Hui-iconfont">{$vo.font_code|raw}</i> {$vo.title}<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					{volist name="vo.new_data" id="v2"}
+					{in name="$v2['id']" value="$role_user_list['ids']"}
+					<li><a data-href="{:url($v2['name'])}" data-title="{$v2.title}" href="javascript:;">{$v2.title}</a></li>
+					{/in}
+					{/volist}
+				</ul>
+		</dd>
+	</dl>	
+	{/in}
+	{/volist}
+</div>
+</aside>
