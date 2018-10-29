@@ -92,7 +92,7 @@ class Customer extends Common
 
     public function index()
     {
-    	
+    	$user=new UserModel;
     	$customer=new CustomerModel;
         $customer_info=new CustomerInfoModel;
         $customer_expend=new CustomerExpendModel;
@@ -121,7 +121,10 @@ class Customer extends Common
         foreach ($list as $key => $value) {
 
             $list[$key]['customer_info_count']=$customer_expend->where('cid',$value['id'])->count();
-            $list[$key]['user_name']=$list[$key]->profile1->username;
+
+            //$list[$key]['realname1']=$customer_info->where('cid',$value['sell_id'])->value('realname');
+            //$list[$key]['address']=$customer_info->where('cid',$value['sell_id'])->value('address');
+            $list[$key]['user_name']=$user->where('id',$value['sell_id'])->value('username');
             $list[$key]['realname1']=$list[$key]->profile2->realname;
             $list[$key]['address']=$list[$key]->profile2->address;
 
