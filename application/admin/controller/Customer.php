@@ -316,7 +316,7 @@ class Customer extends Common
 
     	$cid=$this->request->param('cid');
 
-    	$list=Db::name('customer_info')->where('cid',$cid)->find();
+    	$list=$customer_info->where('cid',$cid)->find();
 
     	
     	if($list){
@@ -377,6 +377,7 @@ class Customer extends Common
             $map[]=['cid','=',$id];
 
         }
+
         $map[]=['is_del','<>','1'];
 
         $list = $customer_expend->where($map)->order('id', 'desc')->paginate();

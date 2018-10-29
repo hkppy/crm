@@ -1,5 +1,4 @@
-<?php /*a:3:{s:83:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\seller_level\edit.html";i:1538618538;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1538020752;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\footer_js.html";i:1538015651;}*/ ?>
-<!--_meta 作为公共模版分离出去-->
+<?php /*a:3:{s:83:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\seller_level\edit.html";i:1540452813;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540453180;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\footer_js.html";i:1538015651;}*/ ?>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -11,28 +10,30 @@
 <link rel="Bookmark" href="/favicon.ico" >
 <link rel="Shortcut Icon" href="/favicon.ico" />
 <!--[if lt IE 9]>
-<script type="text/javascript" src="/static/lib/html5shiv.js"></script>
-<script type="text/javascript" src="/static/lib/respond.min.js"></script>
+<script type="text/javascript" src="/../static/lib/html5shiv.js"></script>
+<script type="text/javascript" src="/../static/lib/respond.min.js"></script>
 <![endif]-->
-<link rel="stylesheet" type="text/css" href="/static/static/h-ui/css/H-ui.min.css" />
-<link rel="stylesheet" type="text/css" href="/static/static/h-ui.admin/css/H-ui.admin.css" />
-<link rel="stylesheet" type="text/css" href="/static/lib/Hui-iconfont/1.0.8/iconfont.css" />
-<link rel="stylesheet" type="text/css" href="/static/static/h-ui.admin/skin/default/skin.css" id="skin" />
-<link rel="stylesheet" type="text/css" href="/static/static/h-ui.admin/css/style.css" />
-
+<link rel="stylesheet" type="text/css" href="/../static/static/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="/../static/static/h-ui.admin/css/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="/../static/lib/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="/../static/static/h-ui.admin/skin/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="/../static/static/h-ui.admin/css/style.css" />
 <!--[if IE 6]>
-<script type="text/javascript" src="/static/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script type="text/javascript" src="/../static/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
-
-<title>添加用户 - H-ui.admin v3.1</title>
-<meta name="keywords" content="H-ui.admin v3.1,H-ui网站后台模版,后台模版下载,后台管理系统模版,HTML后台模版下载">
-<meta name="description" content="H-ui.admin v3.1，是一款由国人开发的轻量级扁平化网站后台模板，完全免费开源的网站后台管理系统模版，适合中小型CMS后台系统。">
+<title><?php echo htmlspecialchars((isset($list['title']) && ($list['title'] !== '')?$list['title']:"客户管理系统")); ?></title>
+<meta name="keywords" content="<?php echo htmlspecialchars((isset($list['keywords']) && ($list['keywords'] !== '')?$list['keywords']:"这家伙很懒，什么也没留下")); ?>">
+<meta name="description" content="<?php echo htmlspecialchars((isset($list['description']) && ($list['description'] !== '')?$list['description']:"这家伙很懒，什么也没留下")); ?>">
 </head>
+
+
+
+
 <body>
 <article class="page-container">
 	<form action="" method="post" class="form form-horizontal" id="form-member-add">
-				<input type="hidden" name="id" value="<?php echo htmlentities($res['id']); ?>">
+				<input type="hidden" name="id" value="<?php echo htmlspecialchars($res['id']); ?>">
 		<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-3">
 						<span class="c-red">*</span>
@@ -42,7 +43,7 @@
 						<select class="select" id="pid" name="pid" >
 							<option value="0">顶级分类</option>
 							<?php if(is_array($list) || $list instanceof \think\Collection || $list instanceof \think\Paginator): $i = 0; $__LIST__ = $list;if( count($__LIST__)==0 ) : echo "" ;else: foreach($__LIST__ as $key=>$vo): $mod = ($i % 2 );++$i;?>
-							<option value="<?php echo htmlentities($vo['id']); ?>" <?php if($vo['id'] == $res['pid']): ?>selected="selected"<?php endif; ?>><?php echo htmlentities($vo['name']); ?></option>
+							<option value="<?php echo htmlspecialchars($vo['id']); ?>" <?php if($vo['id'] == $res['pid']): ?>selected="selected"<?php endif; ?>><?php echo htmlspecialchars($vo['name']); ?></option>
 							<?php endforeach; endif; else: echo "" ;endif; ?>
 						</select>
 						</span>
@@ -53,7 +54,7 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>分组名称：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="<?php echo htmlentities($res['name']); ?>" placeholder="" id="name" name="name">
+				<input type="text" class="input-text" value="<?php echo htmlspecialchars($res['name']); ?>" placeholder="" id="name" name="name">
 			</div>
 		</div>
 
@@ -66,18 +67,18 @@
 </article>
 
 <!--_footer 作为公共模版分离出去-->
-<script type="text/javascript" src="/static/lib/jquery/1.9.1/jquery.min.js"></script> 
-<script type="text/javascript" src="/static/lib/layer/2.4/layer.js"></script>
-<script type="text/javascript" src="/static/static/h-ui/js/H-ui.min.js"></script>
-<script type="text/javascript" src="/static/static/h-ui.admin/js/H-ui.admin.js"></script>
+<script type="text/javascript" src="/../static/lib/jquery/1.9.1/jquery.min.js"></script> 
+<script type="text/javascript" src="/../static/lib/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="/../static/static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="/../static/static/h-ui.admin/js/H-ui.admin.js"></script>
 
 <!--/_footer 作为公共模版分离出去-->
 
 <!--请在下方写此页面业务相关的脚本--> 
-<script type="text/javascript" src="/static/lib/My97DatePicker/4.8/WdatePicker.js"></script>
-<script type="text/javascript" src="/static/lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
-<script type="text/javascript" src="/static/lib/jquery.validation/1.14.0/validate-methods.js"></script> 
-<script type="text/javascript" src="/static/lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript" src="/../static/lib/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="/../static/lib/jquery.validation/1.14.0/jquery.validate.js"></script> 
+<script type="text/javascript" src="/../static/lib/jquery.validation/1.14.0/validate-methods.js"></script> 
+<script type="text/javascript" src="/../static/lib/jquery.validation/1.14.0/messages_zh.js"></script>
 <script type="text/javascript">
 $(function(){
 	$('.skin-minimal input').iCheck({
