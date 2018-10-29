@@ -28,6 +28,12 @@ return [
         'model'     =>   ['User','UserType'],
         'view'      =>  ['index/index','index/test'],
     ],
+    'demo'=>[
+        '__dir__'   =>  ['config','controller','model'],
+        'controller'=>  ['Index','Test','UserType'],
+        'model'     =>   ['User','UserType'],
+        'view'      =>  ['index/index','index/test'],
+    ],
 
     // 其他更多的模块定义
 ];

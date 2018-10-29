@@ -23,6 +23,7 @@ class Index extends Controller
 		$data['version']='1.0.0';
 		$data['doc']="http://".request()->host()."/api";
 		$this->success('恭喜您,API访问成功!', '',array('data'=>$data));
+
 	}	
     
     //客户信息搜索

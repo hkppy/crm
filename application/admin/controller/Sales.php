@@ -53,7 +53,6 @@ class Sales extends Common
             $count = Db::name('customer_logs')->count();
             cache($customer_logs_cache,$list);
             $customer_logs_list2=cache($customer_logs_cache);
-            //echo "我是新缓存";
         }   
         
         if($artice_list2) {

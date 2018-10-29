@@ -88,6 +88,22 @@ class Customer extends Common
         $data['version']='1.0.0';
         $data['doc']="http://".request()->host()."/api";
         $this->success('恭喜您,API访问成功!', '',array('data'=>$data));
+
+        $items = [
+            ['id' => 1,  'pid' => 0, 'name' => 'PHP'],
+            ['id' => 2, 'pid' => 1, 'name' => 'PHP_Framework'],
+            ['id' => 42, 'pid' => 1, 'name' => 'DevTools'],
+            ['id' => 3, 'pid' => 2, 'name' => 'ThinkPHP5'],
+            ['id' => 4, 'pid' => 2, 'name' => 'Laravel'],
+            ['id' => 43, 'pid' => 42, 'name' => 'PHPStorm'],
+            ['id' => 44, 'pid' => 42, 'name' => 'EclipsePDT'],
+        ];
+
+        shuffle($items);
+
+
+
+
     }
     public function customer_count_lists()
     {
