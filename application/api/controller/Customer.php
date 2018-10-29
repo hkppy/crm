@@ -31,6 +31,7 @@ class Customer extends Common
         $user_logs_m=$this->request->module();
         $user_logs_c=$this->request->controller();
         $user_logs_a=$this->request->action(); 
+        
         $role_auth_action=strtolower($user_logs_m."/".$user_logs_c."/".$user_logs_a);
         $user_logs_list['action']=$role_auth_action;
         $user_logs_list['add_time']=time();
@@ -168,7 +169,7 @@ class Customer extends Common
     {
         
         
-        $customer = new Customer2Model;
+        $customer = new CustomerModel;
         $customer_info = new CustomerInfoModel;
         
         $validate = new CustomerValidate;

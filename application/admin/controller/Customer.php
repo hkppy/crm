@@ -80,7 +80,7 @@ class Customer extends Common
 
     	$user_logs_list['uid']=ADMIN_UID;
 		$user_logs_list['userid']=ADMIN_UID;
-        $user_logs_list['userid']=ADMIN_USERNAME;
+        $user_logs_list['username']=ADMIN_USERNAME;
 		$user_logs_list['sell_id']=ADMIN_UID;
 		$user_logs_list['ip']=$this->request->ip();
 		

@@ -2,23 +2,25 @@
 namespace app\admin\controller;
 use think\Controller;
 use think\Db;
+use app\admin\model\SellerLevel as SellerLevelModel;
 
 class SellerLevel extends Common
 {
     public function index()
     {
     	//echo session('group_id');
-
-    	$list = Db::name('seller_level')->paginate();
-    	$count = Db::name('seller_level')->count();
+        $seller_level=new SellerLevelModel;
+    	$list = $seller_level->paginate();
+    	$count = $seller_level->count();
 		//dump($list);
 		$this->assign('count',$count);
     	$this->assign('list',$list);
     	return $this->fetch();
     }
     public function add()
-    {
-    	$list = Db::name('seller_level')->select();
+    {   
+        $seller_level=SellerLevelModel;
+    	$list = $seller_level->select();
     	//dump($list);
     	$this->assign('list',$list);
     	return $this->fetch('add');
@@ -26,13 +28,13 @@ class SellerLevel extends Common
   
     public function addPost()
     {
-
+        $seller_level=new SellerLevelModel;
         $data['name']=$this->request->param('name');
         $data['pid']=$this->request->param('pid');
 		$data['add_time']=time();
 
         	
-        $list=Db::name('seller_level')->insert($data);
+        $list=$seller_level->insert($data);
         if($list){
         	$info=['status' => '1','code'=>'001','msg'=>'操作成功'];
         }else{
@@ -44,27 +46,29 @@ class SellerLevel extends Common
     }
     public function edit()
     {
+        $seller_level=new SellerLevelModel;
     	$id=$this->request->param('id');
     	 
-    	$list = Db::name('seller_level')->where(array('pid'=>'0'))->select();
+    	$list = $seller_level->where(array('pid'=>'0'))->select();
     	
     	
     	$this->assign('list',$list);
     	 
     	if($id){
-    	 	$res = Db::name('seller_level')->where(array('id'=>$id))->find();
+    	 	$res = $seller_level->where(array('id'=>$id))->find();
     	 	$this->assign('res',$res);
     	}
     	return $this->fetch('edit');
     }      
     public function editPost()
     {
+        $seller_level=new SellerLevelModel;
     	$id=$this->request->param('id');
     	
     	$data['pid']= $this->request->param('pid');
 		$data['name'] = $this->request->param('name');
 
-		$result = DB::name('seller_level')->where(array('id'=>$id))->update($data);
+		$result = $seller_level->where(array('id'=>$id))->update($data);
 		
     	if ($result) {
     		$info=['status' => '1','code'=>'200','msg'=>'操作成功'];
@@ -76,10 +80,10 @@ class SellerLevel extends Common
     }	    
     public function delete()
     {
-    	
+    	$seller_level=new SellerLevelModel;
     	$id=$this->request->param('id');
         
-        $del=Db::name('seller_level')->where('id',$id)->delete();
+        $del=$seller_level->where('id',$id)->delete();
     	if ($del) {
     		
 			$info=['status' => '1','code'=>'002','msg'=>'操作成功'];

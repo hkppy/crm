@@ -17,6 +17,7 @@ class Attendance extends Common
     {
 
         $user=new USerModel;
+        $seller_level=new SellerLevelModel;
         //echo session('admin_group_id');
     	if(session('admin_group_id')!='1'){
 
@@ -29,7 +30,7 @@ class Attendance extends Common
 
     	
     	foreach ($list as $key=>$value) {
-    		$list[$key]['level_name'] = Db::name('seller_level')->where(array('id'=>$value['seller_level_id']))->value('name');
+    		$list[$key]['level_name'] = $seller_level->where(array('id'=>$value['seller_level_id']))->value('name');
     		if(empty($list[$key]['level_name'])){
     			$list[$key]['level_name']='未关联等级';
     		}	

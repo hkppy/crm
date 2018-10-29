@@ -1,4 +1,4 @@
-<?php /*a:2:{s:79:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\index\welcome.html";i:1540453828;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540453180;}*/ ?>
+<?php /*a:2:{s:79:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\index\welcome.html";i:1540453828;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540782757;}*/ ?>
 ﻿<!DOCTYPE HTML>
 <html>
 <head>
@@ -23,13 +23,9 @@
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
 <title><?php echo htmlspecialchars((isset($list['title']) && ($list['title'] !== '')?$list['title']:"客户管理系统")); ?></title>
-<meta name="keywords" content="<?php echo htmlspecialchars((isset($list['keywords']) && ($list['keywords'] !== '')?$list['keywords']:"这家伙很懒，什么也没留下")); ?>">
-<meta name="description" content="<?php echo htmlspecialchars((isset($list['description']) && ($list['description'] !== '')?$list['description']:"这家伙很懒，什么也没留下")); ?>">
+<meta name="keywords" content="<?php echo htmlspecialchars((isset($list['keywords']) && ($list['keywords'] !== '')?$list['keywords']:"关键字，待定义")); ?>">
+<meta name="description" content="<?php echo htmlspecialchars((isset($list['description']) && ($list['description'] !== '')?$list['description']:"简介，待定义")); ?>">
 </head>
-
-
-
-
 <body>
 <div class="page-container">
 	<p class="f-20 text-success">欢迎访问 用户名：<?php echo htmlspecialchars($login_user_list['user_login']); ?></p>

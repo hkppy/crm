@@ -2,7 +2,9 @@
 namespace app\admin\controller;
 use think\Controller;
 use think\Db;
+use app\admin\model\Role as RoleModel; 
 use app\admin\model\AuthRule as AuthRuleModel;
+
 class Rbac extends Common
 {
     public function index()
@@ -46,12 +48,12 @@ class Rbac extends Common
 
     public function permission_add()
     {
-    	
-    	$list = Db::name('auth_rule')->where('pid','0')->order('sort', 'desc')->select();
+    	$auth_rule=new AuthRuleModel;
+    	$list = $auth_rule->where('pid','0')->order('sort', 'desc')->select();
     	
     	foreach ($list as $key=>$value) {
     		
-		  $list[$key]['new_data'] = Db::name('auth_rule')->where(array('pid'=>$value['id']))->order('sort', 'desc')->select();
+		  $list[$key]['new_data'] = $auth_rule->where(array('pid'=>$value['id']))->order('sort', 'desc')->select();
 
 		}
     	
@@ -63,6 +65,8 @@ class Rbac extends Common
     }
     public function addPost()
     {
+        $auth_rule=new AuthRuleModel;
+
     	$data['title']=$this->request->param('title');
     	$data['name']=$this->request->param('name');
     	$data['note']=$this->request->param('note');
@@ -74,14 +78,14 @@ class Rbac extends Common
     	$data['font_code']=$this->request->param('font_code');
     	
     	
-    	$res=Db::name('auth_rule')->where('name',$data['name'])->find();
+    	$res=$auth_rule->where('name',$data['name'])->find();
     	if($res){
     		$info=['status' => '0','code'=>'003','msg'=>'权限名称已存在,请修改！',];
     		return json($info);
     		exit;
     	}    	
     	
-    	$list=Db::name('auth_rule')->insert($data);
+    	$list=$auth_rule->insert($data);
     	
     	if($list){
     		$info=['status' => '1','code'=>'001','msg'=>'操作成功',];
@@ -94,9 +98,11 @@ class Rbac extends Common
     } 
     public function rbac_edit()
     {
+        $auth_rule=new AuthRuleModel;
+
     	$id=$this->request->param('id');
     	
-    	$list = Db::name('auth_rule')->where('pid','0')->order('sort', 'desc')->select();
+    	$list = $auth_rule->where('pid','0')->order('sort', 'desc')->select();
     	
     	foreach ($list as $key=>$value) {
     		
@@ -105,7 +111,7 @@ class Rbac extends Common
 		}
     	 
     	 if($id){
-    	 	$auth_rule = Db::name('auth_rule')->where(array('id'=>$id))->find();
+    	 	$auth_rule = $auth_rule->where(array('id'=>$id))->find();
     	 	//dump($admin_user);
     	 	$this->assign('auth_rule',$auth_rule);
     	 }
@@ -114,6 +120,7 @@ class Rbac extends Common
     } 
     public function editPost()
     {
+        $auth_rule=new AuthRuleModel;
     	$id=$this->request->param('id');
     	$is_data['title']=$this->request->param('title');
     	$is_data['name']=$this->request->param('name');
@@ -124,7 +131,7 @@ class Rbac extends Common
     	$is_data['font_code']=$this->request->param('font_code');
     	$is_data['status']=$this->request->param('status');
     	$is_data['is_display']=$this->request->param('is_display');
-    	$result = DB::name('auth_rule')->where(array('id'=>$id))->update($is_data);
+    	$result = $auth_rule->where(array('id'=>$id))->update($is_data);
     	
     	if ($result) {
     		$info=['status' => '1','code'=>'002','msg'=>'操作成功',];
@@ -136,9 +143,9 @@ class Rbac extends Common
     }
     public function delete()
     {
-    	
+    	$auth_rule=new AuthRuleModel;
     	$id=$this->request->param('id');
-        $del=Db::name('auth_rule')->where('id',$id)->delete();
+        $del=$auth_rule->where('id',$id)->delete();
     	if ($del) {
     		
 			$info=['status' => '1','code'=>'002','msg'=>'操作成功',];

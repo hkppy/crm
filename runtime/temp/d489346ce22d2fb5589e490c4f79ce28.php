@@ -1,4 +1,4 @@
-<?php /*a:3:{s:83:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\seller_group\edit.html";i:1540452802;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540453180;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\footer_js.html";i:1538015651;}*/ ?>
+<?php /*a:3:{s:83:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\seller_group\edit.html";i:1540452802;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540782757;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\footer_js.html";i:1538015651;}*/ ?>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -23,13 +23,9 @@
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
 <title><?php echo htmlspecialchars((isset($list['title']) && ($list['title'] !== '')?$list['title']:"客户管理系统")); ?></title>
-<meta name="keywords" content="<?php echo htmlspecialchars((isset($list['keywords']) && ($list['keywords'] !== '')?$list['keywords']:"这家伙很懒，什么也没留下")); ?>">
-<meta name="description" content="<?php echo htmlspecialchars((isset($list['description']) && ($list['description'] !== '')?$list['description']:"这家伙很懒，什么也没留下")); ?>">
+<meta name="keywords" content="<?php echo htmlspecialchars((isset($list['keywords']) && ($list['keywords'] !== '')?$list['keywords']:"关键字，待定义")); ?>">
+<meta name="description" content="<?php echo htmlspecialchars((isset($list['description']) && ($list['description'] !== '')?$list['description']:"简介，待定义")); ?>">
 </head>
-
-
-
-
 <body>
 <article class="page-container">
 	<form action="" method="post" class="form form-horizontal" id="form-member-add">

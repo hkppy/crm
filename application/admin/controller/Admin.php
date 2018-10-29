@@ -8,6 +8,9 @@ use think\facade\Validate;
 
 
 use app\admin\model\User as UserModel;
+use app\admin\model\Role as RoleModel; 
+use app\admin\model\AuthRule as AuthRuleModel;
+
 use app\common\validate\Admin as AdminValidate;
 
 class Admin extends Common
@@ -15,11 +18,12 @@ class Admin extends Common
     public function index()
     {
         $user=new USerModel;
+        $role=new RoleModel;
     	$list = $user->paginate(15);
     	$count = $user->count();
 
     	foreach ($list as $key=>$value) {
-		  $role_list[$key] = Db::name('role')->where(array('id'=>$value['user_type']))->field('name')->find();
+		  $role_list[$key] = $role->where(array('id'=>$value['user_type']))->field('name')->find();
 		  $list[$key]['role_name']=$role_list[$key]['name'];
 		}
 		//dump($list);
@@ -29,8 +33,9 @@ class Admin extends Common
     }
     public function admin_add()
     {
-    	$role = Db::name('role')->select();
-    	$this->assign('role',$role);
+        $role=new RoleModel;
+    	$list =  $role->select();
+    	$this->assign('role',$list);
     	return $this->fetch('admin_add');
     }
   
@@ -57,7 +62,7 @@ class Admin extends Common
         	$info=['status' => '0','code'=>'004','msg'=>'密码输入不一致'];
         }
 
-        $res=Db::name('user')->where('user_login',$data['username'])->find();
+        $res=$user->where('user_login',$data['username'])->find();
         if($res){
         	$info=['status' => '0','code'=>'003','msg'=>'用户名已存在'];
         }else{
@@ -94,16 +99,18 @@ class Admin extends Common
     }
     public function admin_edit()
     {
-    	 $id=$this->request->param('id');
+        $user = new UserModel;
+        $role=new RoleModel;
+    	$id=$this->request->param('id');
     	 
-    	 if($id){
-    	 	$admin_user = Db::name('user')->where(array('id'=>$id))->field('id,user_type,user_status,user_email,phone,user_login,sex,note')->find();
+    	if($id){
+    	 	$admin_user = $user->where(array('id'=>$id))->field('id,user_type,user_status,user_email,phone,user_login,sex,note')->find();
     	 	//dump($admin_user);
     	 	$this->assign('admin_user',$admin_user);
-    	 }
+    	}
     	
-    	$role = Db::name('role')->select();
-    	$this->assign('role',$role);
+    	$list = $role->select();
+    	$this->assign('role',$list);
     	return $this->fetch('admin_edit');
     }      
     public function editPost()
