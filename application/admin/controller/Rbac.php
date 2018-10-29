@@ -12,7 +12,7 @@ class Rbac extends Common
 
         $auth_rule=new AuthRuleModel;
 
-        $list= $auth_rule->paginate(100);
+        $list= $auth_rule->order('sort', 'desc')->paginate(100);
         $count= $auth_rule->count();
         $page = $list->render();
 

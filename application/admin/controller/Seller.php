@@ -34,14 +34,8 @@ class Seller extends Common
         $seller_group=new SellerGroupModel;
         
 
-        $uid=session('admin_uid');
-    	if(session('admin_group_id')!='1'){
-    		$list = $user->where('user_type','2')->where('id', $uid)->select();
-    		$count = $user->where('user_type','2')->where('id', $uid)->count();
-    	}else{
-    		$list = $user->where('user_type','2')->select();
-    		$count = $user->where('user_type','2')->count();
-    	}
+        $list = $user->where('user_type','2')->select();
+        $count = $user->where('user_type','2')->count();
     	
 
     	foreach ($list as $key=>$value) {
@@ -54,10 +48,8 @@ class Seller extends Common
 			
             $list[$key]['group_sid']=implode(",", $group_sid);
 		}
+        
     	$seller_level_list = $seller_group->where(array('parent_id'=>'0'))->select();
-    	//dump($list);
-    	
-    	//dump($seller_level_list);
     	
     	$this->assign('seller_level_list',$seller_level_list);
 		$this->assign('count',$count);

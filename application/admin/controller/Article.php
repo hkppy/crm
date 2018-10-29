@@ -31,13 +31,15 @@ class Article extends Common
     public function index()
     {
         $artice=new ArticleModel;
-    	$list = $artice->where('status','1')->order('id', 'desc')->paginate(15);
+        $article_category=new ArticleCategoryModel;
+
+    	$list = $artice->where('status','1')->order('id', 'desc')->paginate();
     	$count =$artice->where('status','1')->count();
     	foreach($list as $key=>$value){
     		if(empty($value['article_category_id'])){
     			$list[$key]['cate_name']	="未分类";
     		}else{
-                $list[$key]['cate_name'] = Db::name('article_category')->where('id',$value['article_category_id'])->value('name');
+                $list[$key]['cate_name'] = $article_category->where('id',$value['article_category_id'])->value('name');
     			
     		}
     	}

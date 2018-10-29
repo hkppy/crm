@@ -20,10 +20,10 @@ class Attendance extends Common
         //echo session('admin_group_id');
     	if(session('admin_group_id')!='1'){
 
-    		$list = $user->where('user_type','2')->where('id',ADMIN_UID)->paginate(15);
+    		$list = $user->where('user_type','2')->where('id',ADMIN_UID)->paginate();
     		$count = $user->where('user_type','2')->where('id',ADMIN_UID)->count();
     	}else{
-    		$list = $user->where('user_type','2')->where('status','<>','3')->paginate(15);
+    		$list = $user->where('user_type','2')->where('status','<>','3')->paginate();
     		$count = $user->where('user_type','2')->where('status','<>','3')->count();
     	}
 

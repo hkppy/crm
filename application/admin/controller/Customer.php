@@ -115,7 +115,7 @@ class Customer extends Common
         }
 
 
-        $list = $customer->where($map)->order('id', 'desc')->paginate(15);
+        $list = $customer->where($map)->order('id', 'desc')->paginate();
         $count =$customer->where($map)->count();
 
         foreach ($list as $key => $value) {
@@ -206,7 +206,7 @@ class Customer extends Common
 
 
     	 //cid客户ID
-    	$res = $customer_expend->where(array('cid'=>$id))->paginate(15);
+    	$res = $customer_expend->where(array('cid'=>$id))->paginate();
         $count = $customer_expend->where(array('cid'=>$id))->count();
 
         foreach ($res as $key=>$value) {
@@ -375,9 +375,11 @@ class Customer extends Common
         }
         if(!empty($id)&&$id!=''){
             $map[]=['cid','=',$id];
-        }
 
-        $list = $customer_expend->where($map)->order('id', 'desc')->paginate(15);
+        }
+        $map[]=['is_del','<>','1'];
+
+        $list = $customer_expend->where($map)->order('id', 'desc')->paginate();
         $count = $customer_expend->where($map)->count();
 
         foreach ($list as $key=>$value) {

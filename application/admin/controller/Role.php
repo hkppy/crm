@@ -6,7 +6,7 @@ class Role extends Common
 {
     public function index()
     {
-    	$list = Db::name('role')->paginate(15);
+    	$list = Db::name('role')->paginate();
     	$count = Db::name('role')->count();
     	$this->assign('count',$count);
     	$this->assign('list',$list);

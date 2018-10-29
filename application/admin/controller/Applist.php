@@ -11,7 +11,7 @@ class Applist extends Common
 {
     public function index()
     {
-    	$list = Db::name('applist')->paginate('15');
+    	$list = Db::name('applist')->paginate();
     	$count = Db::name('applist')->count();
     	$this->assign('count',$count);
     	$this->assign('list',$list);

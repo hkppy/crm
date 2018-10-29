@@ -17,7 +17,7 @@ class SellerGroup extends Common
         $user=new UserModel;
         $seller_group=new SellerGroupModel;
 
-        $list = $seller_group->paginate(15);
+        $list = $seller_group->paginate();
         $count = $seller_group->count();
 
     	foreach($list as $key=>$value){

@@ -1,4 +1,4 @@
-<?php /*a:4:{s:84:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\customer\shop_list.html";i:1540452634;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540453180;s:92:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_column_title.html";i:1538040490;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\footer_js.html";i:1538015651;}*/ ?>
+<?php /*a:4:{s:84:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\customer\shop_list.html";i:1540778258;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540453180;s:92:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_column_title.html";i:1538040490;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\footer_js.html";i:1538015651;}*/ ?>
 ﻿<!DOCTYPE HTML>
 <html>
 <head>
@@ -174,7 +174,7 @@ function member_edit(title,url,id,w,h){
 function change_password(title,url,id,w,h){
 	layer_show(title,url,w,h);	
 }
-/*用户-删除*/
+/*用户消费信息-删除*/
 function member_del(obj,id){
 	layer.confirm('确认要删除吗？',function(index){
 		$.ajax({

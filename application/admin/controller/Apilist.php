@@ -21,7 +21,7 @@ class Apilist extends Controller
     public function index()
     {
         $apilist=new ApilistModel;
-        $list = $apilist->where('status','1')->order('id', 'desc')->paginate(15);
+        $list = $apilist->where('status','1')->order('id', 'desc')->paginate();
         $count =$apilist->where('status','1')->count();
 
         $this->assign('count',$count);

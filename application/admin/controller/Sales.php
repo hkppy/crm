@@ -32,7 +32,7 @@ class Sales extends Common
     {
         
 
-        $list = Db::name('customer_logs')->order('id', 'desc')->paginate('15');
+        $list = Db::name('customer_logs')->order('id', 'desc')->paginate();
         $count = Db::name('customer_logs')->count();
         $this->assign('count',$count);
     	$this->assign('list',$list);

@@ -9,7 +9,7 @@ class SellerLevel extends Common
     {
     	//echo session('group_id');
 
-    	$list = Db::name('seller_level')->paginate(15);
+    	$list = Db::name('seller_level')->paginate();
     	$count = Db::name('seller_level')->count();
 		//dump($list);
 		$this->assign('count',$count);
