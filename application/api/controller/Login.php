@@ -18,6 +18,7 @@ class Login extends Controller
     	echo session('api_username');
     	echo session('api_uid');
         echo 1111;
+        echo "登录检测页面";
     }
 
     public function login_check()
