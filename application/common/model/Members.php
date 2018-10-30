@@ -1,11 +1,12 @@
 <?php
 
 namespace app\common\model;
-
 use think\Model;
 
-class Customer extends Model
+class Members extends Model
 {
+    protected $table = 'crm_members';
+    
     public function buildParam($array=[])
     {
         $data=[];
@@ -16,6 +17,7 @@ class Customer extends Model
         }
         return $data;
     }
+
     public function editData($data){
 
         if (isset($data['id'])){

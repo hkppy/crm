@@ -5,7 +5,7 @@ use think\Db;
 use think\facade\Debug;
 use think\facade\Request;
 use think\facade\Validate;
-
+use think\facade\Cache;
 
 use app\admin\model\User as UserModel;
 use app\admin\model\Role as RoleModel; 
@@ -115,6 +115,7 @@ class Admin extends Common
     }      
     public function editPost()
     {
+        $user = new UserModel;
     	if($this->request->isPost())
 		{	
     	$id=$this->request->param('id');
@@ -130,7 +131,7 @@ class Admin extends Common
     		exit;
     	}
 
-    	$result = DB::name('user')->where(array('id'=>$id))->update($is_data);
+    	$result = $user->where(array('id'=>$id))->update($is_data);
     	
     	if ($result) {
     		$info=['status' => '1','code'=>'002','msg'=>'操作成功'];
@@ -144,7 +145,7 @@ class Admin extends Common
     }	    
     public function delete()
     {
-    	
+    	$user = new UserModel;
     	$id=$this->request->param('id');
     	
     	if ($id == 1) {
@@ -154,7 +155,7 @@ class Admin extends Common
             exit;
         }
         
-        $del=Db::name('user')->where('id',$id)->delete();
+        $del=$user->where('id',$id)->delete();
     	if ($del) {
     		
 			$info=['status' => '1','code'=>'002','msg'=>'操作成功'];
@@ -165,9 +166,10 @@ class Admin extends Common
     }
     public function post_up()
     {
+        $user = new UserModel;
     	$id=$this->request->param('id');
     	
-    	$result = DB::name('user')->where('id', $id)->update(['status' => '0']);
+    	$result = $user->where('id', $id)->update(['status' => '0']);
     	if($id=='1'){
     		$info=['status' => '0','code'=>'002','msg'=>'管理员不能禁用'];
     		return json($info);
@@ -184,9 +186,10 @@ class Admin extends Common
     }        
     public function post_do()
     {
+        $user = new UserModel;
     	$id=$this->request->param('id');
     	
-    	$result = DB::name('user')->where('id', $id)->update(['status' => '1']);
+    	$result = $user->where('id', $id)->update(['status' => '1']);
     	
     	if ($result) {
     		$info=['status' => '1','code'=>'002','msg'=>'操作成功'];
@@ -198,8 +201,9 @@ class Admin extends Common
     } 
     public function admin_change_password()
     {
+        $user = new UserModel;
     	$id=$this->request->param('id');
-    	$list = Db::name('user')->where(array('id'=>$id))->field('id,user_login')->find();
+    	$list = $user->where(array('id'=>$id))->field('id,user_login')->find();
     	$this->assign('list',$list);
     	return $this->fetch('admin_password_edit');
     }
@@ -237,7 +241,8 @@ class Admin extends Common
     	
     }
     public function user_password_edit(){
-    	$list = Db::name('user')->where(array('id'=>session('admin_uid')))->field('id,user_login')->find();
+        $user = new UserModel;
+    	$list = $user->where(array('id'=>session('admin_uid')))->field('id,user_login')->find();
     	$this->assign('list',$list);
     	return $this->fetch('admin_password_edit');
     }
@@ -246,7 +251,7 @@ class Admin extends Common
      */
     public function clear() {
     	
-        $cache=\Cache::clear(); 
+        $cache=Cache::clear(); 
         if ($cache) {
 	    	$info=['status' => '1','code'=>'002','msg'=>'操作成功'];
 	    } else {
