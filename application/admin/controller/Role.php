@@ -2,6 +2,7 @@
 namespace app\admin\controller;
 use think\Controller;
 use think\Db;
+use think\facade\Cache;
 use app\admin\model\Role as RoleModel; 
 use app\admin\model\AuthRule as AuthRuleModel;
 
@@ -59,8 +60,10 @@ class Role extends Common
        		$in_data['create_time']=time();
        		
        		$list=$res->insert($in_data);
+ 
        		if($list){
-	      		$info=['status' => '1','code'=>'001','msg'=>'操作成功',];
+            Cache::rm('menu_list_cache'); 
+            $info=['status' => '1','code'=>'001','msg'=>'操作成功',];
 	      	}else{
 	      		$info=['status' => '0','code'=>'002','msg'=>'操作失败',];
 	      	}
@@ -111,7 +114,8 @@ class Role extends Common
        	
 		  $result = $role->where(array('id'=>$id))->update(['ids' => $ids2,'remark'=>$remark]);
     	if ($result) {
-    	$info=['status' => '1','code'=>'002','msg'=>'操作成功',];
+          Cache::rm('menu_list_cache'); 
+    	    $info=['status' => '1','code'=>'002','msg'=>'操作成功',];
       } else {
             $info=['status' => '0','code'=>'002','msg'=>'操作失败',];
       }

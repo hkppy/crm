@@ -1,4 +1,4 @@
-<?php /*a:3:{s:91:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\admin\admin_password_edit.html";i:1540452536;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540782757;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\footer_js.html";i:1538015651;}*/ ?>
+<?php /*a:3:{s:91:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\admin\admin_password_edit.html";i:1540867956;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540782757;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\footer_js.html";i:1538015651;}*/ ?>
 ﻿<!DOCTYPE HTML>
 <html>
 <head>
@@ -38,7 +38,7 @@
 		</div>
 	</div>
 	<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>旧密码：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>原密码：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="password" class="input-text"  placeholder="" id="oldpassword" name="oldpassword">
 			</div>
@@ -50,7 +50,7 @@
 			</div>
 	</div>	
 	<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>再次输入新密码：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>确认输入新密码：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 				<input type="password" class="input-text" value="" placeholder="" id="confirm_password" name="confirm_password">
 			</div>
@@ -84,32 +84,32 @@ $(function(){
 		rules:{
 			oldpassword:{
 				required:true,
-				minlength:5
+				minlength:6
 			},
-	    new_password: {
-	        required: true,
-	        minlength: 5
-	    },
-	    confirm_password: {
-	      required: true,
-	      minlength: 5,
-	      equalTo: "#new_password"
-	    },		
+		    new_password: {
+		        required: true,
+		        minlength: 6
+		    },
+		    confirm_password: {
+		      required: true,
+		      minlength: 6,
+		      equalTo: "#new_password"
+		    },		
 		},
 		messages: {
-				oldpassword: {
-	        required: "请输入旧密码",
-	        minlength: "密码长度不能小于 5 个字母"
-	      },
-	      new_password: {
-	        required: "请输入密码",
-	        minlength: "密码长度不能小于 5 个字母"
-	      },
-	      confirm_password: {
-	        required: "请输入密码",
-	        minlength: "密码长度不能小于 5 个字母",
-	        equalTo: "两次密码输入不一致"
-	      },
+			oldpassword: {
+		       required: "请输入旧密码",
+		       minlength: "密码长度不能小于 6 个字母"
+		      },
+		    new_password: {
+		       required: "请输入密码",
+		       minlength: "密码长度不能小于 6 个字母"
+		      },
+		    confirm_password: {
+		       required: "请输入密码",
+		       minlength: "密码长度不能小于 6 个字母",
+		       equalTo: "两次密码输入不一致"
+		      },
 		},	
 		onkeyup:false,
 		focusCleanup:true,
@@ -129,12 +129,10 @@ $(function(){
 					
 				},
         error: function(XmlHttpRequest, textStatus, errorThrown){
-					layer.msg('error!',{icon:1,time:1000});
+					layer.msg('error!',{icon:2,time:1000});
 				}
 			});
-			//var index = parent.layer.getFrameIndex(window.name);
-			//parent.$('.btn-refresh').click();
-			//parent.layer.close(index);
+
 		}
 	});
 });

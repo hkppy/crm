@@ -4,6 +4,7 @@ use think\Controller;
 use think\Db;
 use think\facade\Request;
 use think\facade\Debug;
+use think\facade\Cache;
 
 use app\admin\model\User as UserModel;
 use app\admin\model\AuthRule as AuthRuleModel; 
@@ -19,11 +20,11 @@ class Common extends Controller
 			 //$this->error('请先登录！',url('/admin/login/index'));
 			 $this->redirect('admin/login/index');
 		}
+
 		define('ADMIN_UID', session('admin_uid'));
 		define('ADMIN_USERNAME', session('admin_username'));
 		define('ROLE_UID', session('admin_user_type'));
 
-		
 		$common_check_user = $user->get(session('admin_uid'));
 		
 		if(!$common_check_user){
@@ -36,33 +37,35 @@ class Common extends Controller
 			$this->error('此页面访问权限未开放，请联系管理员！',url('/admin/index/index'));
 		}
 
-	    $common_list = $auth_rule->where(array('pid'=>'0','status'=>'1','is_display'=>'1'))->order('sort', 'desc')->select();
 
-    	foreach ($common_list as $key=>$value) {
-    		
-		  $common_list[$key]['new_data'] = $auth_rule->where(array('pid'=>$value['id'],'status'=>'1','is_display'=>'1'))->order('sort', 'desc')->select();
+		//菜单缓存
+		$menu_list_data=Cache::get('menu_list_cache');
 
+		if(!$menu_list_data){
+			$common_list = $auth_rule->where(array('pid'=>'0','status'=>'1','is_display'=>'1'))->order('sort', 'desc')->select();
+			foreach ($common_list as $key=>$value) {
+	    		
+			  $common_list[$key]['new_data'] = $auth_rule->where(array('pid'=>$value['id'],'status'=>'1','is_display'=>'1'))->order('sort', 'desc')->select();
+
+			}
+			Cache::set('menu_list_cache',$common_list);
+			$menu_list_data=Cache::get('menu_list_cache');
 		}
+
+	    
 		
 		$role_user_list=Db::name('role')->where(array('id'=>session('admin_user_type')))->field('id,name,ids')->find();
+		//dump($role_user_list);
 		$this->assign('role_user_list',$role_user_list);
 		
-		//dump($role_user_list);
-		
 		$login_user_list=$user->where(array('id'=>ADMIN_UID))->field('last_login_ip,last_login_time,user_type,user_login')->find();
-	
-		$login_role_list=Db::name('role')->where(array('id'=>$login_user_list['user_type']))->find();
 
-		$user_ids=$login_role_list['ids'];
-
-		$user_ids_array = explode(",", $user_ids);
+		$user_ids_array = explode(",", $role_user_list['ids']);
 		
 		
 		$login_role_list_act=$auth_rule->where('id','in',$user_ids_array)->column('name');
 		
-		//dump($login_role_list_act);
-		
-		$this->assign('login_role_list',$login_role_list);
+		$this->assign('login_role_list',$role_user_list);
 		$this->assign('login_user_list',$login_user_list);
 				
 		$user_logs_m=$this->request->module();
@@ -93,7 +96,7 @@ class Common extends Controller
 		$this->assign('common_column_title',$common_column_title);
 
 
-		$role_auth_list=Db::name('auth_rule')->column('id');
+		$role_auth_list=$auth_rule->column('id');
 
 		$intersection = array_intersect($user_ids_array, $role_auth_list);
 
@@ -117,7 +120,7 @@ class Common extends Controller
 		$user_logs_list['time']=time();
 		$user_logs_list['note']="用户操作";
 		$result=Db::name('user_logs')->insert($user_logs_list);
-		$this->assign('common_list',$common_list);
+		$this->assign('common_list',$menu_list_data);
 
 
 	}	

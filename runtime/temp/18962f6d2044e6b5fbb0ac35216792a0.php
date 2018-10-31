@@ -1,4 +1,4 @@
-<?php /*a:3:{s:78:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\customer\add.html";i:1540536724;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540782757;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\footer_js.html";i:1538015651;}*/ ?>
+<?php /*a:3:{s:78:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\customer\add.html";i:1540965585;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540782757;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\footer_js.html";i:1538015651;}*/ ?>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -31,33 +31,48 @@
 	<form action="" method="post" class="form form-horizontal" id="form-member-add">
 		<input type="hidden" name="__token__" value="<?php echo htmlspecialchars(app('request')->token()); ?>" />
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>真实姓名：</label>
+			<label class="form-label col-xs-4 col-sm-3">姓名：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="realname" name="realname">
+				<input type="text" class="input-text"  placeholder="" id="realname" name="realname">
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>QQ：</label>
+			<label class="form-label col-xs-4 col-sm-3">昵称：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="qq" name="qq">
+				<input type="text" class="input-text"  placeholder="" id="nickname" name="nickname">
 			</div>
 		</div>
+
+	<div class="row cl">
+		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>联系方式：</label>
+		<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+			<div class="radio-box">
+				<input name="lxfs" type="radio" id="sex-1" value="1" checked>
+				<label for="sex-1">微信</label>
+			</div>
+			<div class="radio-box">
+				<input type="radio" id="sex-2" value="2" name="lxfs">
+				<label for="sex-2">QQ</label>
+			</div>
+			<div class="radio-box">
+				<input type="radio" id="sex-2" value="3" name="lxfs">
+				<label for="sex-2">手机</label>
+			</div>
+		</div>
+	</div>
 		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>微信：</label>
+			<label class="form-label col-xs-4 col-sm-3">联系号码：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="weixin" name="weixin">
+				<input type="text" class="input-text"  placeholder="" id="lxfs_value" name="lxfs_value">
 			</div>
 		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>手机：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="" placeholder="" id="phone" name="phone">
-			</div>
-		</div>
+
+
+
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>密码：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="password" class="input-text" value="" placeholder="为空则不修改" id="password" name="password">
+				<input type="text" class="input-text" value="" placeholder="为空则不修改" id="password" name="password">
 			</div>
 		</div>
 
@@ -92,17 +107,23 @@ $(function(){
 	
 	$("#form-member-add").validate({
 		rules:{
-			qq:{
+			realname:{
 				required:true,
-				minlength:8,
-				maxlength:16
+				minlength:2,
+				maxlength:5
+			},			
+			nickname:{
+				required:true,
+				minlength:2,
+				maxlength:12
 			},
-			weixin:{
+			lxfs:{
 				required:true,
 			},
-			phone:{
+			lxfs_value:{
 				required:true,
-				isMobile:true,
+				minlength:6,
+				maxlength:32
 			},
 			
 		},

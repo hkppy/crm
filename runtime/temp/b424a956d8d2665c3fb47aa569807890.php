@@ -1,4 +1,4 @@
-<?php /*a:4:{s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\customer\recycle.html";i:1540452628;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540782757;s:92:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_column_title.html";i:1538040490;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\footer_js.html";i:1538015651;}*/ ?>
+<?php /*a:4:{s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\customer\recycle.html";i:1540968478;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540782757;s:92:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_column_title.html";i:1538040490;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\footer_js.html";i:1538015651;}*/ ?>
 ﻿<!DOCTYPE HTML>
 <html>
 <head>
@@ -54,34 +54,17 @@
 		<thead>
 
 			
-			<?php if(session('group_id')=='1'): ?>
-			<tr class="text-c">
+						<tr class="text-c">
 				<th width="25"><input type="checkbox" name="" value=""></th>
 				<th width="20">ID</th>
 				<th width="50">真实姓名</th>
-				<th width="40">QQ</th>
-				<th width="90">手机</th>
-				<th width="40">微信</th>
-				<th width="100">地址</th>
+				<th width="40">联系方式</th>
+				<th width="90">联系号码</th>
 				<th width="60">所属销售</th>
-				<th width="130">加入时间</th>
-				<!--<th width="50">是否软删除</th>-->
-				<th width="100">操作</th>
-			</tr>
-			<?php else: ?>
-			<tr class="text-c">
-				<th width="25"><input type="checkbox" name="" value=""></th>
-				<th width="20">ID</th>
-				<th width="50">真实姓名</th>
-				<th width="40">QQ</th>
-				<th width="90">手机</th>
-				<th width="40">微信</th>
-				<th width="100">地址</th>
-				<th width="60">所属销售</th>
+				<th width="60">消费记录</th>
 				<th width="130">加入时间</th>
 				<th width="100">操作</th>
 			</tr>
-			<?php endif; ?>
 			
 			
 			
@@ -91,23 +74,25 @@
 			<?php foreach($list as $key=>$vo): ?> 
 			<tr class="text-c">
 				<td><input type="checkbox" value="<?php echo htmlspecialchars($vo['id']); ?>" name=""></td>
-				<td><u style="cursor:pointer" class="text-primary" onclick="member_show('添加更多客户信息','<?php echo url('customer_show',array('id'=>$vo['id'])); ?>','10001','800','600')"><?php echo htmlspecialchars($vo['id']); ?></u></td>
-				<td><u style="cursor:pointer" class="text-primary" onclick="member_show('<?php echo htmlspecialchars($vo['realname']); ?>','<?php echo url('customer_show',array('id'=>$vo['id'])); ?>','10001','800','600')"><?php echo htmlspecialchars($vo['realname1']); ?></u></td>
-				<td><?php echo htmlspecialchars($vo['qq']); ?></td>
-				<td><?php echo htmlspecialchars($vo['phone']); ?></td>
-				<td><?php echo htmlspecialchars($vo['weixin']); ?></td>
-				<td class="text-l"><?php echo htmlspecialchars($vo['address']); ?></td>
-				<td>
-					<?php echo htmlspecialchars($vo['user_name']); ?>
-				</td>
-				<td><?php echo htmlspecialchars(date('Y-m-d h:i:s',!is_numeric($vo['create_time'])? strtotime($vo['create_time']) : $vo['create_time'])); ?></td>
+				<td><?php echo htmlspecialchars($vo['id']); ?></td>
+				<td><?php echo htmlspecialchars($vo['realname']); ?></td>
+				<td><?php echo htmlspecialchars($vo['lxfs']); ?></td>
+				<td><?php echo htmlspecialchars($vo['lxfs_value']); ?></td>
+				<td><?php echo htmlspecialchars($vo['user_name']); ?></td>
+				<td><?php echo htmlspecialchars($vo['customer_info_count']); ?> 条</td>
+				<td><?php echo htmlspecialchars($vo['create_time']); ?></td>
 				<!--<?php if(session('group_id')=='1'): if($vo['is_del'] == '0'): ?>
 				    <td style="color: red;">已删除</td>
 					<?php else: ?>
 					 <td>未删除</td>
 					<?php endif; endif; ?>-->
 				<td class="td-manage"> 
-					<a title="查看删除的客户消费信息" href="javascript:;" onclick="sales_show('查看客户消费信息','<?php echo url('admin/customer/shop_list_del',array('id'=>$vo['id'])); ?>')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6b9;</i></a> 
+					<!-- <a title="查看删除的客户消费信息" href="javascript:;" onclick="sales_show('查看客户消费信息','<?php echo url('admin/customer/shop_list_del',array('id'=>$vo['id'])); ?>')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6b9;</i></a>  -->
+					
+					<!-- <a title="查看客户消费信息" href="javascript:;" onclick="sales_show('查看客户消费信息','<?php echo url('admin/customer/shop_list',array('id'=>$vo['id'])); ?>')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6b9;</i></a>  -->
+
+
+
 					<a title="恢复" href="javascript:;" onclick="member_del_add(this,'<?php echo htmlspecialchars($vo['id']); ?>')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe68f;</i></a>
 				</td>
 			<?php endforeach; ?>

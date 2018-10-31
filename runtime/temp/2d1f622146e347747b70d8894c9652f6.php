@@ -1,4 +1,4 @@
-<?php /*a:3:{s:80:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\admin\resetpwd.html";i:1540452539;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540453180;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\footer_js.html";i:1538015651;}*/ ?>
+<?php /*a:3:{s:80:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\admin\resetpwd.html";i:1540868100;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540782757;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\footer_js.html";i:1538015651;}*/ ?>
 ﻿<!DOCTYPE HTML>
 <html>
 <head>
@@ -23,13 +23,9 @@
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
 <title><?php echo htmlspecialchars((isset($list['title']) && ($list['title'] !== '')?$list['title']:"客户管理系统")); ?></title>
-<meta name="keywords" content="<?php echo htmlspecialchars((isset($list['keywords']) && ($list['keywords'] !== '')?$list['keywords']:"这家伙很懒，什么也没留下")); ?>">
-<meta name="description" content="<?php echo htmlspecialchars((isset($list['description']) && ($list['description'] !== '')?$list['description']:"这家伙很懒，什么也没留下")); ?>">
+<meta name="keywords" content="<?php echo htmlspecialchars((isset($list['keywords']) && ($list['keywords'] !== '')?$list['keywords']:"关键字，待定义")); ?>">
+<meta name="description" content="<?php echo htmlspecialchars((isset($list['description']) && ($list['description'] !== '')?$list['description']:"简介，待定义")); ?>">
 </head>
-
-
-
-
 <body>
 
 <article class="page-container">
@@ -44,19 +40,19 @@
 	<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>密匙：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text"  placeholder="" id="key" name="key">
+				<?php echo htmlspecialchars(md5($list['salt'])); ?>
 			</div>
 	</div>
 	<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>新密码：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="password" class="input-text"  placeholder="" id="new_password" name="new_password">
+				<input type="password" class="input-text"  placeholder="" id="password" name="password">
 			</div>
 	</div>	
 	<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>再次输入新密码：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>请复制密匙到此输入框：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="password" class="input-text" value="" placeholder="" id="confirm_password" name="confirm_password">
+				<input type="text" class="input-text" value="" placeholder="" id="salt" name="salt">
 			</div>
 	</div>	
 	<div class="row cl">
@@ -86,32 +82,27 @@ $(function(){
 
 	$("#form-admin-add").validate({
 		rules:{
-			key:{
-				required:true
+			password: {
+		        required: true,
+		        minlength: 5,
+		        maxlength:32
+		    },
+		    salt:{
+				required:true,
+				minlength: 32
 			},
-	    new_password: {
-	        required: true,
-	        minlength: 5
-	    },
-	    confirm_password: {
-	      required: true,
-	      minlength: 5,
-	      equalTo: "#new_password"
-	    },		
+	
 		},
 		messages: {
-			key: {
-	        required: "请输入密匙",
-	      },
-	      new_password: {
-	        required: "请输入密码",
-	        minlength: "密码长度不能小于 5 个字母"
-	      },
-	      confirm_password: {
+			password: {
 	        required: "请输入密码",
 	        minlength: "密码长度不能小于 5 个字母",
-	        equalTo: "两次密码输入不一致"
-	      },
+	        maxlength: "密码长度不能小于 32 个字母",
+	      	},
+	      	salt: {
+	        required: "请输入密匙",
+	        minlength: "密匙长度不能小于 32个字母"
+	      	},
 		},	
 		onkeyup:false,
 		focusCleanup:true,

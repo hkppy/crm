@@ -28,9 +28,8 @@ class Login extends Controller
         $list = $user->where('username', $username)->find();
         
 		if($list){
-			
-			$password2=md5($password);
-			
+
+            $password2=$user->edit_pwd_key($password,$list['salt']);
 			$res = $user->where(array('username'=>$username,'password'=>$password2))->find();
 			if($res){
 
@@ -42,8 +41,10 @@ class Login extends Controller
                 session('admin_role_id',$res['role_id']);//账号状态
                 
                 $user->where('id', $res['id'])->setInc('login_count');
-
-
+                $data2['last_login_time']=time();
+                $data2['last_login_ip']=request()->ip();
+                
+                $user->save($data2,['id'=>$res['id']]);
 
         		//session('img', $img);
 				$this->success('登录成功！',url('/admin/index'));

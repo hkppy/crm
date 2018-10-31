@@ -2,6 +2,7 @@
 namespace app\api\controller;
 use think\Controller;
 use think\Validate;
+use think\facade\Cache;
 use app\api\model\Customer as CustomerModel;
 use app\api\model\CustomerInfo as CustomerInfoModel;
 use app\api\model\CustomerExpend as CustomerExpendModel;
@@ -21,22 +22,30 @@ class Shopping extends Common
 		$customer_info=new CustomerInfoModel;
 		$customer = new CustomerModel;
     	
-    	//获取今天的新增
-    	$data_count['today_count']=$customer_expend->whereTime('create_time', 'today')->where(array('status'=>'1','sell_id'=>API_UID))->count();
-    	// 获取本周的新增
-		$data_count['week_count']=$customer_expend->whereTime('create_time', 'week')->where(array('status'=>'1','sell_id'=>API_UID))->count();
-		// 获取本月的新增
-		$data_count['month_count']=$customer_expend->whereTime('create_time', 'month')->where(array('status'=>'1','sell_id'=>API_UID))->count();
-		
-		
-		//获取今天的新增
-    	$data_count['today_count_money']=$customer_expend->whereTime('create_time', 'today')->where(array('status'=>'1','sell_id'=>API_UID))->sum('pay_amount');
-    	// 获取本周的新增
-		$data_count['week_count_money']=$customer_expend->whereTime('create_time', 'week')->where(array('status'=>'1','sell_id'=>API_UID))->sum('pay_amount');
-		// 获取本月的新增
-		$data_count['month_count_money']=$customer_expend->whereTime('create_time', 'month')->where(array('status'=>'1','sell_id'=>API_UID))->sum('pay_amount');
+        $data_count_list=cache('shop_count_list_cache');
 
-    	$this->success('请求成功', '',$data_count);
+        if(!$data_count_list){
+            //获取今天的新增
+        $data_count['today_count']=$customer_expend->whereTime('create_time', 'today')->where(array('status'=>'1','sell_id'=>API_UID))->count();
+        // 获取本周的新增
+        $data_count['week_count']=$customer_expend->whereTime('create_time', 'week')->where(array('status'=>'1','sell_id'=>API_UID))->count();
+        // 获取本月的新增
+        $data_count['month_count']=$customer_expend->whereTime('create_time', 'month')->where(array('status'=>'1','sell_id'=>API_UID))->count();
+        
+        
+        //获取今天的新增
+        $data_count['today_count_money']=$customer_expend->whereTime('create_time', 'today')->where(array('status'=>'1','sell_id'=>API_UID))->sum('pay_amount');
+        // 获取本周的新增
+        $data_count['week_count_money']=$customer_expend->whereTime('create_time', 'week')->where(array('status'=>'1','sell_id'=>API_UID))->sum('pay_amount');
+        // 获取本月的新增
+        $data_count['month_count_money']=$customer_expend->whereTime('create_time', 'month')->where(array('status'=>'1','sell_id'=>API_UID))->sum('pay_amount');
+
+        Cache::set('shop_count_list_cache',$data_count);
+
+        $data_count_list=cache('shop_count_list_cache');
+        }
+
+    	$this->success('请求成功', '',$data_count_list);
     
 	}	
     public function index()
@@ -84,7 +93,7 @@ class Shopping extends Common
          $shopping_cache='shopping_list';
         
         $shopping_list2=cache($shopping_cache);
-        
+
         if(!$shopping_list2){
 
         $shopping_list=$customer_expend->order('id', 'desc')->where(array('status'=>'1','sell_id'=>API_UID))->paginate(20);

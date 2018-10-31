@@ -7,26 +7,13 @@ use app\admin\model\Role as RoleModel;
 use app\admin\model\AuthRule as AuthRuleModel;
 class User extends Model
 {
-    protected $auto = ['username','ip'];
-    protected $insert = ['status' =>'1'];  
-    protected $update = ['ip','login_ip'];  
     protected $autoWriteTimestamp = true;
+
     protected $type = [
         'status'    =>  'integer',
         'score'     =>  'float',
         'birthday'  =>  'datetime',
     ];
-
-
-    protected function setUsernameAttr($value)
-    {
-        return strtolower($value);
-    }
-
-    protected function setIpAttr()
-    {
-        return request()->ip();
-    }
 
     protected function buildParam($array)
     {
@@ -38,6 +25,7 @@ class User extends Model
         }
         return $data;
     }
+
     public function profile()
     {
         return $this->hasOne('role','id','role_id');
@@ -51,10 +39,7 @@ class User extends Model
             return true;
         }else{
 
-
-
         $list2=$role->get($list['role_id']);
-
         $user_logs_m=request()->module();
         $user_logs_c=request()->controller();
         $user_logs_a=request()->action();
@@ -93,13 +78,40 @@ class User extends Model
         }else{
             $save  = $this->allowField(true)->save($data);
         }
-        if ( $save == 0 || $save == false) {
-            $res=[  'code'=> 1009,  'msg' => '数据更新失败', ];
+        if ($save == 0 || $save == false) {
+            $res=[  'code'=> 0,  'msg' => '数据更新失败', ];
         }else{
-            $res=[  'code'=> 1001,  'msg' => '数据更新成功',  ];
+            $res=[  'code'=> 1,  'msg' => '数据更新成功',  ];
         }
         return $res;
     }
+
+    //生成php随机数
+    public function randomkeys($length)   
+    {   
+        $output='';
+        for($a=0;$a<$length;$a++){
+            $output.=chr(mt_rand(33,126));
+        }
+        return $output;
+    }
+
+    public function edit_pwd_key($pwd,$salt){
+        $pwd=md5(md5($salt)."+".md5($pwd));
+        return $pwd;
+    }
+
+    public function getUserList($map=[],$order = 'id desc',$limit=8,$page=1){
+
+        $field="id,username,email,role_id,user_login,user_email,status,create_time";
+        $map['status']=1;
+        $data=$this->where($map)->field($field)
+           ->limit($limit)
+           ->page($page)
+           ->order($order)->select();
+        return $data;
+    }
+
 
  
 }

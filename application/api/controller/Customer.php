@@ -67,9 +67,10 @@ class Customer extends Common
         
         
         
-        $user_logs_list['uid']=session('admin_uid');
-        $user_logs_list['userid']=session('admin_uid');
-        $user_logs_list['sell_id']=session('admin_uid');
+        $user_logs_list['uid']=session('api_uid');
+        $user_logs_list['userid']=session('api_uid');
+        $user_logs_list['username']=session('api_username');
+        $user_logs_list['sell_id']=session('api_uid');
         $user_logs_list['ip']=$this->request->ip();
 
         //dump($user_logs_list);
@@ -89,22 +90,6 @@ class Customer extends Common
         $data['version']='1.0.0';
         $data['doc']="http://".request()->host()."/api";
         $this->success('恭喜您,API访问成功!', '',array('data'=>$data));
-
-        $items = [
-            ['id' => 1,  'pid' => 0, 'name' => 'PHP'],
-            ['id' => 2, 'pid' => 1, 'name' => 'PHP_Framework'],
-            ['id' => 42, 'pid' => 1, 'name' => 'DevTools'],
-            ['id' => 3, 'pid' => 2, 'name' => 'ThinkPHP5'],
-            ['id' => 4, 'pid' => 2, 'name' => 'Laravel'],
-            ['id' => 43, 'pid' => 42, 'name' => 'PHPStorm'],
-            ['id' => 44, 'pid' => 42, 'name' => 'EclipsePDT'],
-        ];
-
-        shuffle($items);
-
-
-
-
     }
     public function customer_count_lists()
     {
@@ -112,23 +97,36 @@ class Customer extends Common
         $customer_expend = new CustomerExpendModel;
         $customer_info=new CustomerInfoModel;
         $customer = new CustomerModel;
-        
-        //获取今天的新增客户
-        $data['today_count']=$customer->whereTime('create_time', 'today')->where(array('status'=>'1','sell_id'=>API_UID))->count();
-        // 获取本周的新增客户
-        $data['week_count']=$customer->whereTime('create_time', 'week')->where(array('status'=>'1','sell_id'=>API_UID))->count();
-        // 获取本月的新增客户
-        $data['month_count']=$customer->whereTime('create_time', 'month')->where(array('status'=>'1','sell_id'=>API_UID))->count();
-        
-        
-        //获取今天的新增客户消费金额
-        $data['today_count_money']=$customer_expend->whereTime('create_time', 'today')->where(array('status'=>'1','sell_id'=>API_UID))->sum('pay_amount');
-        // 获取本周的新增客户消费金额
-        $data['week_count_money']=$customer_expend->whereTime('create_time', 'week')->where(array('status'=>'1','sell_id'=>API_UID))->sum('pay_amount');
-        // 获取本月的新增客户消费金额
-        $data['month_count_money']=$customer_expend->whereTime('create_time', 'month')->where(array('status'=>'1','sell_id'=>API_UID))->sum('pay_amount');
 
-        $this->success('请求成功','',$data);
+
+        $customer_count_list=cache('customer_count_list_cache');
+
+        if(!$customer_count_list){
+                    //获取今天的新增客户
+            $data['today_count']=$customer->whereTime('create_time', 'today')->where(array('status'=>'1','sell_id'=>API_UID))->count();
+            // 获取本周的新增客户
+            $data['week_count']=$customer->whereTime('create_time', 'week')->where(array('status'=>'1','sell_id'=>API_UID))->count();
+            // 获取本月的新增客户
+            $data['month_count']=$customer->whereTime('create_time', 'month')->where(array('status'=>'1','sell_id'=>API_UID))->count();
+            
+            
+            //获取今天的新增客户消费金额
+            $data['today_count_money']=$customer_expend->whereTime('create_time', 'today')->where(array('status'=>'1','sell_id'=>API_UID))->sum('pay_amount');
+            // 获取本周的新增客户消费金额
+            $data['week_count_money']=$customer_expend->whereTime('create_time', 'week')->where(array('status'=>'1','sell_id'=>API_UID))->sum('pay_amount');
+            // 获取本月的新增客户消费金额
+            $data['month_count_money']=$customer_expend->whereTime('create_time', 'month')->where(array('status'=>'1','sell_id'=>API_UID))->sum('pay_amount');
+
+            Cache::set('customer_count_list_cache',$data);
+
+            $customer_count_list=cache('customer_count_list_cache');
+
+
+        }
+        
+
+
+        $this->success('请求成功','',$customer_count_list);
     
     }   
     
@@ -180,7 +178,7 @@ class Customer extends Common
             $this->error($validate->getError());
         }
 
-        $customer->add($data);
+        $list=$customer->save($data);
             
         $cid=$list->id;
         if($list){
@@ -198,7 +196,7 @@ class Customer extends Common
             ]); 
         
 
-            if($list) {
+            if($list2) {
 
             //设置成功后跳转页面的地址，默认的返回页面是$_SERVER['HTTP_REFERER']
                 $this->success('操作成功');
@@ -228,15 +226,14 @@ class Customer extends Common
         $customer = new CustomerModel;
         $id=request()->param('id');
         
-        $list=$customer->where(array('id'=> $id,'sell_id'=>session('api_uid')))->find();
+        $list=$customer->where(array('id'=> $id,'sell_id'=>ADMIN_UID))->find();
 
         if($list) {
             $list['lxfs2']=$list->getData('lxfs');
             $list['customer_info']=$list->profile;
-            //设置成功后跳转页面的地址，默认的返回页面是$_SERVER['HTTP_REFERER']
             $this->success('修改成功');
         } else {
-            //错误页面的默认跳转页面是返回前一页，通常不需要设置
+
             $this->error('记录不存在');
         }
     
@@ -260,8 +257,6 @@ class Customer extends Common
         }
 
         $list = $customer->allowField(['realname','lxfs','lxfs_value','password'])->save($_POST, ['id' => $id]);
-
-
 
         if($list){
             $list2 = $customer_info->allowField(['realname','address','notes','lifa','birthday'])->save($_POST, ['id' => $customer_info_id]);

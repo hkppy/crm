@@ -19,14 +19,15 @@ class Admin extends Common
     {
         $user=new USerModel;
         $role=new RoleModel;
-    	$list = $user->paginate(15);
-    	$count = $user->count();
 
+        $map['status']=1;
+        $field="id,username,email,role_id,user_login,user_email,status,create_time";
+        
+        $list = $user->with('profile')->where($map)->field($field)->paginate(15);
+    	$count = $user->count();
     	foreach ($list as $key=>$value) {
-		  $role_list[$key] = $role->where(array('id'=>$value['user_type']))->field('name')->find();
-		  $list[$key]['role_name']=$role_list[$key]['name'];
+		  $list[$key]['role_name']=$value['profile']['name'];
 		}
-		//dump($list);
 		$this->assign('count',$count);
     	$this->assign('list',$list);
     	return $this->fetch('admin_list');
@@ -55,24 +56,27 @@ class Admin extends Common
             $this->error($validate->getError());
         } 
 
-    	$pwd_key=md5($user->random('6'));
-
-        
+    	$salt=$user->randomkeys('6');
         if($data['password']!=$data['password2']){
         	$info=['status' => '0','code'=>'004','msg'=>'密码输入不一致'];
+            return json($info);
+            exit;
         }
 
         $res=$user->where('user_login',$data['username'])->find();
         if($res){
-        	$info=['status' => '0','code'=>'003','msg'=>'用户名已存在'];
+        	$info=['status' => '0','code'=>'003','msg'=>'用户名已存在，请更换用户名！'];
+            return json($info);
+            exit;
         }else{
-        	
+
+        	$pwd=md5(md5($salt)."+".md5($data['password']));
         	$in_data['user_login']=$data['username'];
         	$in_data['username']=$data['username'];
-        	$in_data['pwd_key']=$pwd_key;
-        	$in_data['user_pass']=md5($data['password']);
-        	$in_data['salt']=$pwd_key;
-        	$in_data['password']=md5($data['password']);
+        	$in_data['pwd_key']=$salt;
+        	$in_data['user_pass']=$pwd;
+        	$in_data['salt']=$salt;
+        	$in_data['password']=$pwd;
         	$in_data['sex']=$data['sex'];
         	$in_data['phone']=$data['phone'];
         	$in_data['user_email']=$data['email'];
@@ -104,7 +108,8 @@ class Admin extends Common
     	$id=$this->request->param('id');
     	 
     	if($id){
-    	 	$admin_user = $user->where(array('id'=>$id))->field('id,user_type,user_status,user_email,phone,user_login,sex,note')->find();
+            $field="id,user_type,user_status,user_email,phone,user_login,sex,note";
+    	 	$admin_user = $user->where(array('id'=>$id))->field($field)->find();
     	 	//dump($admin_user);
     	 	$this->assign('admin_user',$admin_user);
     	}
@@ -125,6 +130,7 @@ class Admin extends Common
     	$is_data['user_type']=$this->request->param('adminRole');
         $in_data['role_id']=$this->request->param('adminRole');
     	$is_data['note']=$this->request->param('note');
+
     	if($id=='1'){
     		$info=['status' => '0','code'=>'002','msg'=>'管理员角色不可修改',];
     		return json($info);
@@ -202,8 +208,9 @@ class Admin extends Common
     public function admin_change_password()
     {
         $user = new UserModel;
-    	$id=$this->request->param('id');
-    	$list = $user->where(array('id'=>$id))->field('id,user_login')->find();
+        $field='id,user_login';
+    	$list = $user->where(array('id'=>ADMIN_UID))->field($field)->find();
+
     	$this->assign('list',$list);
     	return $this->fetch('admin_password_edit');
     }
@@ -211,38 +218,41 @@ class Admin extends Common
     {
     	$user = new UserModel;
     	
-    	$id=$this->request->param('id');
-    	//原密码
-    	$oldpassword=$this->request->param('oldpassword');
-    	//新密码
-    	$new_password=$this->request->param('new_password');
+    	$data=$this->request->param();
+        
+        $salt = $user->get($data['id'])->value('salt');
 
-    	$list = $user->where(array('id'=>$id,'user_pass'=>md5($oldpassword)))->find();
-    	
-    	if(!$list){
-    		$info=['status' => '0','code'=>'002','msg'=>'原密码不正确'];
-    	}else{
-    		
-    		
-    		$pwd_key=md5($user->random('6'));
-    		$new_password=md5($new_password);
+        $password2=$user->edit_pwd_key($data['oldpassword'],$salt);
 
-    		$result = DB::name('user')->where(array('id'=>$id))->update(array('user_pass'=>$new_password,'password'=>$new_password,'pwd_key'=>$pwd_key));
-    	
-	    	if ($result) {
-	    		$info=['status' => '1','code'=>'002','msg'=>'操作成功'];
-	        } else {
-	            $info=['status' => '0','code'=>'002','msg'=>'操作失败'];
-	        }
-    		
-    		
-    	}
-    	return json($info);
+        $list = $user->where(array('id'=>ADMIN_UID,'user_pass'=>$password2))->find();
+            
+        if(!$list){
+                $info=['status' => '0','code'=>'002','msg'=>'原密码不正确'];
+            }else{
+                
+            $salt2=$user->randomkeys('6');
+
+            $new_password=$user->edit_pwd_key($data['new_password'],$salt2);
+
+            $result = $user->where(array('id'=>ADMIN_UID))->update(array('user_pass'=>$new_password,'password'=>$new_password,'pwd_key'=>$salt2,'salt'=>$salt2));
+            
+            if ($result) {
+                    $info=['status' => '1','code'=>'002','msg'=>'操作成功'];
+            } else {
+                    $info=['status' => '0','code'=>'002','msg'=>'操作失败'];
+            }
+                
+                
+        }
+        return json($info);
+
+
+
     	
     }
     public function user_password_edit(){
         $user = new UserModel;
-    	$list = $user->where(array('id'=>session('admin_uid')))->field('id,user_login')->find();
+    	$list = $user->where(array('id'=>ADMIN_UID))->field('id,user_login')->find();
     	$this->assign('list',$list);
     	return $this->fetch('admin_password_edit');
     }
@@ -262,13 +272,30 @@ class Admin extends Common
     public function resetpwd(){
 
         $user = new UserModel;
-
-        $list=$user->where('id',ADMIN_UID)->field('id,username')->find();
+        $data=$this->request->param();
+        $list=$user->where('id',$data['id'])->field('id,username,salt')->find();
         $this->assign('list',$list);
         return $this->fetch();
     }
     public function reset_pwd_post(){
-
+        $user = new UserModel;
+        $data=$this->request->param();
+        //dump($data);
+        if(!empty($data['id'])){
+            $salt = $user->where(array('id'=>$data['id']))->value('salt');
+            if($data['salt']!=md5($salt)){
+                 $this->error('密匙输入不正确');
+            }else{
+                $salt2=$user->randomkeys('6');
+                $password=$user->edit_pwd_key($data['password'],$salt2);
+                $result = $user->where(array('id'=>$data['id']))->update(array('user_pass'=>$password,'password'=>$password,'pwd_key'=>$salt2,'salt'=>$salt2));
+                if ($result) {
+                    $this->success('操作成功');
+                }else{
+                    $this->error('操作失败');
+                }
+            }
+        }
     }
 	    	    
 }

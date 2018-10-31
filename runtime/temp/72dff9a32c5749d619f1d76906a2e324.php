@@ -1,4 +1,4 @@
-<?php /*a:4:{s:88:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\customer\shop_list_del.html";i:1540369024;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540259350;s:92:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_column_title.html";i:1538040490;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\footer_js.html";i:1538015651;}*/ ?>
+<?php /*a:4:{s:88:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\customer\shop_list_del.html";i:1540452638;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540782757;s:92:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_column_title.html";i:1538040490;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\footer_js.html";i:1538015651;}*/ ?>
 ﻿<!DOCTYPE HTML>
 <html>
 <head>
@@ -7,6 +7,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
+<link rel="Bookmark" href="/favicon.ico" >
+<link rel="Shortcut Icon" href="/favicon.ico" />
 <!--[if lt IE 9]>
 <script type="text/javascript" src="/../static/lib/html5shiv.js"></script>
 <script type="text/javascript" src="/../static/lib/respond.min.js"></script>
@@ -16,13 +18,13 @@
 <link rel="stylesheet" type="text/css" href="/../static/lib/Hui-iconfont/1.0.8/iconfont.css" />
 <link rel="stylesheet" type="text/css" href="/../static/static/h-ui.admin/skin/default/skin.css" id="skin" />
 <link rel="stylesheet" type="text/css" href="/../static/static/h-ui.admin/css/style.css" />
-
-
 <!--[if IE 6]>
 <script type="text/javascript" src="/../static/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
-<title>用户管理</title>
+<title><?php echo htmlspecialchars((isset($list['title']) && ($list['title'] !== '')?$list['title']:"客户管理系统")); ?></title>
+<meta name="keywords" content="<?php echo htmlspecialchars((isset($list['keywords']) && ($list['keywords'] !== '')?$list['keywords']:"关键字，待定义")); ?>">
+<meta name="description" content="<?php echo htmlspecialchars((isset($list['description']) && ($list['description'] !== '')?$list['description']:"简介，待定义")); ?>">
 </head>
 <body>
 <nav class="breadcrumb">

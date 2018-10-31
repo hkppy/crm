@@ -24,10 +24,10 @@ use app\admin\model\CustomerInfo as CustomerInfoModel;
 use app\admin\model\SellerContact as SellerContactModel;
 use app\admin\model\CustomerExpend as CustomerExpendModel;
 use app\admin\model\ArticleCategory as ArticleCategoryModel;
-
+use app\admin\model\CustomerLogs as CustomerLogsModel;
 
 //加载验证类
-use app\common\validate\Customer as CustomerValidate;
+use app\admin\validate\Customer as CustomerValidate;
 
 class Customer extends Common
 {
@@ -38,56 +38,8 @@ class Customer extends Common
     protected function first()
     {
         Debug::remark('begin');
-
-    	$user_logs_m=$this->request->module();
-		$user_logs_c=$this->request->controller();
-		$user_logs_a=$this->request->action(); 
-
-		$role_auth_action=strtolower($user_logs_m."/".$user_logs_c."/".$user_logs_a);
-
-		$user_logs_list['action']=$role_auth_action;
-    	$user_logs_list['add_time']=time();
-    	$user_logs_list['time']=time();
-    	
-    	switch ($user_logs_a)
-		{
-		case 'index':
-		  $user_logs_list['note']="操作index页面";
-		  break;  
-		case 'add':
-		   $user_logs_list['note']="进入新增页面";
-		  break;
-		case 'addPost':
-		   $user_logs_list['note']="进入新增添加操作";
-		   
-		  break;		  
-		case 'edit':
-		   $user_logs_list['note']="进入修改页面";
-		  break;		
-		case 'delete':
-		   $user_logs_list['note']="进入删除页面";
-		  break;		  
-		case 'recycle':
-		   $user_logs_list['note']="进入回收站操作页面";
-		  break;
-		case 'shop_list':
-		   $user_logs_list['note']="进入客户消费信息页面";
-		  break;		  		    
-		default:
-		  $user_logs_list['note']="未定义";
-		}
-
-
-    	$user_logs_list['uid']=ADMIN_UID;
-		$user_logs_list['userid']=ADMIN_UID;
-        $user_logs_list['username']=ADMIN_USERNAME;
-		$user_logs_list['sell_id']=ADMIN_UID;
-		$user_logs_list['ip']=$this->request->ip();
-		
-		
-		$result=Db::name('customer_logs')->insert($user_logs_list);
-    	
-
+        $customer_logs=new CustomerLogsModel;
+        $customer_logs->customer_logs();
     }
 
     public function index()
@@ -96,40 +48,23 @@ class Customer extends Common
     	$customer=new CustomerModel;
         $customer_info=new CustomerInfoModel;
         $customer_expend=new CustomerExpendModel;
-
         $validate=new  CustomerValidate;
+        $q=$this->request->param('q');
 
-    	$q=$this->request->param('q');
-
-
-        $map[]=['is_del','<>','1'];
+        $map=[];
 
         if(session('admin_group_id')!='1'){
 
             $map[]=['uid','=',ADMIN_UID];
         }
-
         if(!empty($q)){
-
-            $map[]=['realname|qq|weixin|phone','like',$q];
+            $map[]=['nickname|realname|lxfs_value','like',$q];
         }
-
-
-        $list = $customer->where($map)->order('id', 'desc')->paginate();
-        $count =$customer->where($map)->count();
-
-        foreach ($list as $key => $value) {
-            $list[$key]['customer_info_count']=$customer_expend->where('cid',$value['id'])->count();
-            $list[$key]['user_name']=$user->where('id',$value['sell_id'])->value('username');
-            $list[$key]['realname1']=$list[$key]->profile2->realname;
-            $list[$key]['address']=$list[$key]->profile2->address;
-
-        }
+        $list=$customer->getCustomerList($map,$order = 'id desc','15');
         //dump($list);
-
-		$this->assign('count',$count);
     	$this->assign('list',$list);
         Debug::remark('end');
+
     	return $this->fetch();
     }
     public function add()
@@ -141,52 +76,33 @@ class Customer extends Common
     {
 
         $customer=new CustomerModel;
-        $customer_info=new CustomerInfoModel;
-        $customer_expend=new CustomerExpendModel;
         $validate=new  CustomerValidate;
 
-        $data = request()->param();
+        $param = [
+           'id'=>'id',
+           'lxfs'=>'lxfs',
+           'lxfs_value'=>'lxfs_value',       
+           'nickname'=>'nickname',
+           'realname'=>'realname',
+           'password'=>'password',
+        ];
+
+
+        $data=$customer->buildParam($param);
+
         if (!$validate->scene('add')->check($data)) {
             $this->error($validate->getError());
         }
 
-        $data['qq']=$this->request->param('qq');
-        $data['realname']=$this->request->param('realname');
-        $data['weixin']=$this->request->param('weixin');
-        $data['phone']=$this->request->param('phone');
+        $list=$customer->add_post($data);
 
-        $data['sell_id']=ADMIN_UID;
-        $data['uid']=ADMIN_UID;
-
-        if(!empty($password)){
-            $data['password']=md5($password);
-        }
-        $list=$customer->save($data);
 
         if($list){
-
-            $data2['cid']=$customer->id;
-            $data2['realname']=$data['realname'];
-            $data2['sell_id']=ADMIN_UID;
-            $data2['uid']=ADMIN_UID;
-            $list2=$customer_info->save($data2);
-
-            if($list2){
-                Cache::pull('customer_list'); 
-                $this->success('操作成功', '',array('data'=>''));
-                } else {
-                    
-                    $this->error('操作失败');
-                }
-
-        }else {
-                
-                $this->error('操作失败');
-        }
-
-
-
-        
+            Cache::pull('customer_list'); 
+            $this->success('操作成功');
+        } else {
+            $this->error('操作失败');
+        }     
     }
     public function edit()
     {
@@ -195,15 +111,10 @@ class Customer extends Common
         $customer_expend=new CustomerExpendModel;
 
     	$id=$this->request->param('id');
-
-    	$list = $customer->get($id);
-
+    	$list = $customer->get($id)->getData();
     	$this->assign('list',$list);
-
     	$info=$customer_info->where('cid',$id)->find();		
-
         $this->assign('info',$info);
-
 
     	 //cid客户ID
     	$res = $customer_expend->where(array('cid'=>$id))->paginate();
@@ -212,7 +123,8 @@ class Customer extends Common
         foreach ($res as $key=>$value) {
                 $res[$key]['cid_name']=$customer_expend->customer_name($value['cid']);
         }
-    	$this->assign('cid',$id);
+
+    	$this->assign('id',$id);
     	$this->assign('count',$count);
 		$this->assign('res',$res);
 		
@@ -220,34 +132,28 @@ class Customer extends Common
     }      
     public function editPost()
     {
-
-
-
         $customer=new CustomerModel;
         $customer_info=new CustomerInfoModel;
         $customer_expend=new CustomerExpendModel;
         $validate=new  CustomerValidate;
 
-        $data = request()->param();
+        $param = [
+           'id'=>'id',
+           'lxfs'=>'lxfs',
+           'lxfs_value'=>'lxfs_value',       
+           'nickname'=>'nickname',
+           'realname'=>'realname',
+           'password'=>'password',
+        ];
+
+        $data=$customer->buildParam($param);
         if (!$validate->scene('edit')->check($data)) {
             $this->error($validate->getError());
         }
 
-        $id=$this->request->param('id');
-        $data['realname']=$this->request->param('realname');
-        $data['qq']=$this->request->param('qq');
-        $data['phone']=$this->request->param('phone');
-        $data['weixin']=$this->request->param('weixin');
-        $password=$this->request->param('password');
-
-    	if(!empty($password)){
-    		$is_data['password']=md5($password);
-    		$result = $customer->save($data,['id' => $id]);
-    	}else{
-    		$result = $customer->save($data,['id' => $id]);
-    	}
+        $list=$customer->allowField(['lxfs','lxfs_value','nickname','realname','sell_id','uid','password'])->save($data, ['id' => $data['id']]);
     	
-    	if($result){
+    	if($list){
                 Cache::pull('customer_list'); 
                 $this->success('操作成功', '',array('data'=>''));
             } else {
@@ -259,35 +165,32 @@ class Customer extends Common
     public function delete()
     {
     	$customer=new CustomerModel;
-        $customer_expend=new CustomerExpendModel;
-    	$id=$this->request->param('id');
 
-        if(session('admin_group_id')=='1'){
-    		$list=$customer->where('id',$id)->update(array('is_del'=>'1'));
-    	}else{
-    		$list=$customer->where('id',$id)->update(array('is_del'=>'1'));
-    	}
-    	
-			$customer_expend->where('cid',$id)->update(array('is_del'=>'1'));
-    	
-        
+        $customer_expend=new CustomerExpendModel;
+        $customer_info=new CustomerInfoModel;
+        $id=$this->request->param('id');
+
+        $list=$customer->get($id)->delete();
+  
     	if ($list) {
-    		
+
 			$info=['status' => '1','code'=>'002','msg'=>'操作成功'];
         } else {
             $info=['status' => '0','code'=>'002','msg'=>'操作失败'];
         }
 		return json($info);
     }
-    public function customer_show()
-    {
-    	$cid=$this->request->param('id');
-    	$list=Db::name('customer_info')->where('cid',$cid)->find();
+    // public function customer_show()
+    // {   
+    //     $customer_info=new CustomerInfoModel;
 
-    	$this->assign('cid',$cid);
-    	$this->assign('list',$list);
-    	return $this->fetch('customer_show');
-    }
+    // 	$id=$this->request->param('id');
+    //     $list=$customer_info->where('cid',$id)->find();
+
+    //     $this->assign('id',$id);
+    // 	$this->assign('list',$list);
+    // 	return $this->fetch('customer_show');
+    // }
     public function shop_add()
     {
     	$customer=new CustomerModel;
@@ -311,52 +214,44 @@ class Customer extends Common
     }
     public function customer_show_Post()
     {
+
         $customer_info=new CustomerInfoModel;
-    	$id=$this->request->param('id');
+        $id=$this->request->param('id');
 
-    	$cid=$this->request->param('cid');
+        //获取数据
+        $param = [
+           'realname'=>'realname',
+           'lifa'=>'lifa',
+           'realname'=>'realname',
+           'birthday'=>'birthday',
+           'address'=>'address',
+           'notes'=>'notes',
+        ];
 
-    	$list=$customer_info->where('cid',$cid)->find();
+        $data = $customer_info->buildParam($param);
 
+        //验证
+        if(empty($id)){
+            $this->error('参数错误');
+        }
+        $res=$customer_info->where('cid',$id)->find();
+
+        if($res){
+            $list=$customer_info->allowField(['nickname','realname','lifa','birthday','address','notes'])->save($data,['id'=>$res['id']]);
+        }else{
+
+            $data['cid']=$id;
+            $data['sell_id']=ADMIN_UID;
+            $data['uid']=ADMIN_UID;
+            $list=$customer_info->save($data);
+        }
+
+    	if ($list) {
+            $this->success('操作成功');
+        } else {
+            $this->error('操作失败');
+        }
     	
-    	if($list){
-
-    		$update_data['realname']=$this->request->param('realname');
-    		$update_data['lifa']=$this->request->param('lifa');
-    		$update_data['birthday']=strtotime($this->request->param('birthday'));
-    		$update_data['address']=$this->request->param('address');
-    		$update_data['notes']=$this->request->param('notes');
-
-    		$result = $customer_info->where(array('id'=>$id))->update($update_data);
-    		if ($result) {
-    		
-			$info=['status' => '1','code'=>'002','msg'=>'更新成功'];
-	        } else {
-	            $info=['status' => '0','code'=>'002','msg'=>'更新失败'];
-	        }
-	        return json($info);
-    	}else{
-    		
-    		$insert_data['lifa']=$this->request->param('lifa');
-    		$insert_data['birthday']=strtotime($this->request->param('birthday'));
-    		$insert_data['address']=$this->request->param('address');
-    		$insert_data['notes']=$this->request->param('notes');
-    		$insert_data['cid']=$cid;
-    		$insert_data['sell_id']=ADMIN_UID;
-    		$insert_data['uid']=ADMIN_UID;
-    		
-    		$insert_data['add_time']=time();
-    		//dump($insert_data);
-    		
-    		$list=$customer_info->insert($insert_data);
-    		if ($list) {
-    		
-			$info=['status' => '1','code'=>'002','msg'=>'操作成功'];
-	        } else {
-	            $info=['status' => '0','code'=>'002','msg'=>'操作失败'];
-	        }
-	        return json($info);
-    	}
 
     }    
     public function shop_list()
@@ -443,8 +338,6 @@ class Customer extends Common
     		exit;
     	}
     	
-    	
-    	
         $address_list2 = implode(",",$address_list) ;
         
 
@@ -459,8 +352,7 @@ class Customer extends Common
     		return json($info);
     		exit;
     	}
-		
-		//$goods_list2 = json_decode($goods_list) ;
+
 		$goods_list2 = implode("-",$goods_list);
 		$insert_data['goods_list']=$goods_list2;
 		
@@ -574,33 +466,34 @@ class Customer extends Common
     }
     public function  recycle()
     {
-    	
+    	$user=new UserModel;
     	$customer=new CustomerModel;
+        $customer_info=new CustomerInfoModel;
+        $customer_expend=new CustomerExpendModel;
+
     	$q=$this->request->param('q');
-
-
-        $map[]=['is_del','=','1'];
-
+        $map=[];
         if(session('admin_group_id')!='1'){
 
             $map[]=['uid','=',ADMIN_UID];
         }
 
         if(!empty($q)){
-
-            $map[]=['realname|qq|weixin|phone','like',$q];
+            $map[]=['nickname|realname|lxfs_value','like',$q];
         }
 
-        $list = $customer->where($map)->paginate(15);
-        $count = $customer->where($map)->count();
+        $list = $customer->onlyTrashed()->where($map)->with('profile')->paginate(15);
+
+        $count = $customer->onlyTrashed()->where($map)->count();
 
 
-        foreach ($list as $key => $value) {
-            $list[$key]['user_name']=$list[$key]->profile1->username;
-            $list[$key]['realname1']=$list[$key]->profile2->realname;
-            $list[$key]['address']=$list[$key]->profile2->address;
+         foreach ($list as $key => $value) {
+
+            $list[$key]['customer_info_count']=$customer_expend->where('cid',$value['id'])->count();
+            $list[$key]['user_name']=$user->where('id',$value['sell_id'])->value('username');
         }
-		//dump($list);
+
+        
 		$this->assign('count',$count);
     	$this->assign('list',$list);
     	return $this->fetch();
@@ -609,19 +502,14 @@ class Customer extends Common
     {
     	$customer=new CustomerModel;
         $customer_expend=new CustomerExpendModel;
+
     	$id=$this->request->param('id');
 
-        if(session('admin_group_id')=='1'){
-    		$list=$customer->where('id',$id)->update(array('is_del'=>'0'));
-    	}else{
-    		$list=$customer->where('id',$id)->update(array('is_del'=>'0'));
-    	}
-        
-        	$customer_expend->where('cid',$id)->update(array('is_del'=>'0'));
-        
+
+        $list = $customer->restore(['id' => $id]);
+
     	if ($list) {
-    		
-			$info=['status' => '1','code'=>'002','msg'=>'操作成功'];
+            $info=['status' => '1','code'=>'002','msg'=>'操作成功'];
         } else {
             $info=['status' => '0','code'=>'002','msg'=>'操作失败'];
         }

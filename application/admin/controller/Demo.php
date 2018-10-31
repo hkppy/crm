@@ -3,18 +3,18 @@ namespace app\admin\controller;
 use think\Controller;
 use think\Request;
 use think\Db;
-
+use app\admin\model\User as UserModel;
 
 class Demo extends Common
 {
     public function index()
     {
     	$user = new UserModel;
-    	dump($user);
-    	$list = Db::name('applist')->select();
-    	$count = Db::name('applist')->count();
+    	$list = Db::name('applist')->cache(true)->select();
+    	$count = Db::name('applist')->cache(true)->count();
     	$this->assign('count',$count);
     	$this->assign('list',$list);
+        
         return $this->fetch();
     }
     public function add()

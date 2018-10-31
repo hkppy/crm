@@ -15,8 +15,8 @@ class Login extends Controller
     {
     	session('api_username','心心相印');
     	session('api_uid','6');
-    	echo session('api_username');
-    	echo session('api_uid');
+    	echo "用户名：".session('api_username');
+    	echo "密码：".session('api_uid');
     }
 
     public function login_check()

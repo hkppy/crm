@@ -1,4 +1,4 @@
-<?php /*a:3:{s:88:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\customer\customer_show.html";i:1540452616;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540782757;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\footer_js.html";i:1538015651;}*/ ?>
+<?php /*a:3:{s:88:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\customer\customer_show.html";i:1540890813;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540782757;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\footer_js.html";i:1538015651;}*/ ?>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -29,8 +29,7 @@
 <body>
 <article class="page-container">
 	<form class="form form-horizontal" id="form-admin-add">
-		<input type="hidden" name="cid" value="<?php echo htmlspecialchars($cid); ?>">
-		<input type="hidden" name="id" value="<?php echo htmlspecialchars($list['id']); ?>">
+		<input type="hidden" name="id" id="id" value="<?php echo htmlspecialchars($id); ?>">
 	<div class="row cl">
 		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>昵称：</label>
 		<div class="formControls col-xs-8 col-sm-9">
@@ -53,7 +52,7 @@
 	<div class="row cl">
 		<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>出生日期：</label>
 		<div class="formControls col-xs-8 col-sm-9">
-			<input type="text" class="input-text" autocomplete="off" id="birthday" name="birthday"  value="<?php if($list['birthday'] != ''): ?><?php echo htmlspecialchars(date('Y-m-d h:i:s',!is_numeric($list['birthday'])? strtotime($list['birthday']) : $list['birthday'])); endif; ?>">
+			<input type="text" class="input-text" autocomplete="off" id="birthday" name="birthday"  value="<?php if($list['birthday'] != ''): ?><?php echo htmlspecialchars($list['birthday']); endif; ?>">
 		</div>
 	</div>
 	<script src="/../static/style/laydate/laydate.js"></script>
@@ -131,7 +130,7 @@ $(function(){
 				data: $('#form-admin-add').serialize(), //将该表单序列化
 				success: function(data){
 					console.log(data);
-					if(data.status==1){
+					if(data.code==1){
 						layer.msg(data.msg,{icon:1,time:1000});
 					}else{
 						layer.msg(data.msg,{icon:2,time:1000});

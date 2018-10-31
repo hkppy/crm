@@ -1,4 +1,4 @@
-<?php /*a:4:{s:80:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\customer\index.html";i:1540523914;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540782757;s:92:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_column_title.html";i:1538040490;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\footer_js.html";i:1538015651;}*/ ?>
+<?php /*a:4:{s:80:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\customer\index.html";i:1540965819;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540782757;s:92:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_column_title.html";i:1538040490;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\footer_js.html";i:1538015651;}*/ ?>
 ﻿<!DOCTYPE HTML>
 <html>
 <head>
@@ -47,7 +47,7 @@
 
 
 		<span class="l">共用时：<?php echo '<strong>'.Debug::getRangeTime('begin','end').'<strong>s'; ?></span> 
-		<span class="r">共有数据：<strong><?php echo htmlspecialchars($count); ?></strong> 条</span> 
+		<span class="r">共有数据：<strong></strong><?php echo htmlspecialchars($list->total()); ?>条</span> 
 	</div>
 	<div class="mt-20">
 	<table class="table table-border table-bordered table-hover table-bg table-sort">
@@ -57,11 +57,9 @@
 			<tr class="text-c">
 				<th width="25"><input type="checkbox" name="" value=""></th>
 				<th width="20">ID</th>
-				<th width="50">真实姓名</th>
+				<th width="50">姓名</th>
 				<th width="40">联系方式</th>
 				<th width="90">联系号码</th>
-
-				<th width="100">地址</th>
 				<th width="60">所属销售</th>
 				<th width="60">消费记录</th>
 				<th width="130">加入时间</th>
@@ -76,18 +74,16 @@
 			<?php foreach($list as $key=>$vo): ?> 
 			<tr class="text-c">
 				<td><input type="checkbox" value="<?php echo htmlspecialchars($vo['id']); ?>" name=""></td>
-				<td><u style="cursor:pointer" class="text-primary" onclick="member_show('添加更多客户信息','<?php echo url('customer_show',array('id'=>$vo['id'])); ?>','10001','800','600')"><?php echo htmlspecialchars($vo['id']); ?></u></td>
-				<td><u style="cursor:pointer" class="text-primary" onclick="member_show('<?php echo htmlspecialchars($vo['realname']); ?>','<?php echo url('customer_show',array('id'=>$vo['id'])); ?>','10001','800','600')"><?php echo htmlspecialchars($vo['realname']); ?></u></td>
+				<td><?php echo htmlspecialchars($vo['id']); ?></td>
+				<td><?php echo htmlspecialchars($vo['realname']); ?></td>
 				<td><?php echo htmlspecialchars($vo['lxfs']); ?></td>
 				<td><?php echo htmlspecialchars($vo['lxfs_value']); ?></td>
-	
-				<td class="text-l"><?php echo htmlspecialchars($vo['address']); ?></td>
 				<td><?php echo htmlspecialchars($vo['user_name']); ?></td>
 				<td><?php echo htmlspecialchars($vo['customer_info_count']); ?> 条</td>
 				<td><?php echo htmlspecialchars($vo['create_time']); ?></td>
-				<td class="td-manage"> 
-					<a title="添加更多客户信息" href="javascript:;" onclick="member_show('添加更多客户信息','<?php echo url('customer_show',array('id'=>$vo['id'])); ?>','<?php echo htmlspecialchars($vo['id']); ?>','800','600')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe600;</i></a> 
-					<a title="查看客户详细信息" href="javascript:;" onclick="customer_show('<?php echo htmlspecialchars($vo['realname']); ?>->客户的详细信息','<?php echo url('edit',array('id'=>$vo['id'])); ?>')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> 
+				<td class="td-manage">  
+					<a title="查看客户详细信息" href="javascript:;" onclick="customer_show('<?php echo htmlspecialchars($vo['realname']); ?>->客户的详细信息','<?php echo url('edit',array('id'=>$vo['id'])); ?>')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a>
+
 					<a title="查看客户消费信息" href="javascript:;" onclick="sales_show('查看客户消费信息','<?php echo url('admin/customer/shop_list',array('id'=>$vo['id'])); ?>')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6b9;</i></a> 
 					<a title="删除" href="javascript:;" onclick="member_del(this,'<?php echo htmlspecialchars($vo['id']); ?>')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
 				</tr>
@@ -115,7 +111,7 @@ $(function(){
 		"paging": false, // 禁止分页
 		"aaSorting": [[ 1, "desc" ]],//默认第几个排序
 		"aoColumnDefs": [
-	  {"orderable":false,"aTargets":[0,2,3,4,5,6,7,8,9]}// 不参与排序的列
+	  {"orderable":false,"aTargets":[0,2,3,4,5,6,7,8]}// 不参与排序的列
 	]
 	});
 });
@@ -127,9 +123,7 @@ function member_add(title,url,w,h){
 function member_show(title,url,id,w,h){
 	layer_show(title,url,w,h);
 }
-function sales_show(title,url,id,w,h){
-	layer_show(title,url,w,h);
-}
+
 
 function sales_show(title,url){
 	var index = layer.open({
@@ -148,7 +142,6 @@ function customer_show(title,url){
 	});
 	layer.full(index);
 }
-
 
 /*用户-停用*/
 function member_stop(obj,id){

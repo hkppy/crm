@@ -13,7 +13,6 @@
 			
 			{/present}
 			
-			
 			<i class="Hui-iconfont">&#xe600;</i> 添加客户消费信息</a></span> 
 			<span class="l">共用时：{php}echo '<strong>'.Debug::getRangeTime('begin','end').'<strong>s';{/php}</span> 
 			<span class="r">共有数据：<strong>{$count}</strong> 条</span> 
@@ -48,7 +47,7 @@
 				<td>{$vo.create_time}</td>
 				<td class="td-manage"> 
 					<a title="编辑" href="javascript:;" onclick="member_edit('编辑','{:url('customer_shop_edit',array('id'=>$vo['id']))}','4','800','600')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> 
-					<a title="删除" href="javascript:;" onclick="member_del(this,'{$vo.id}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a
+					<!-- <a title="删除" href="javascript:;" onclick="member_del(this,'{$vo.id}')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a -->
 				</td>
 					
 			</tr>

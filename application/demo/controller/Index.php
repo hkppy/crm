@@ -2,7 +2,8 @@
 namespace app\demo\controller;
 use think\Controller;
 use think\facade\Request;
-use app\demo\model\Members as MembersModel;
+
+use app\common\model\Members as MembersModel;
 class Index extends Controller
 {
     public function index()
@@ -10,16 +11,13 @@ class Index extends Controller
 
         	$members= new MembersModel;
 
-        	$list=$members->all('1,2,3');
-        	dump($list);
 
-        	if($this->request->isAjax()){
-        	$param = [
-                'username' => 'username',
-            ];
+        	 $param = [
+                   'username'=>'username',
+                   'username2'=>'username2',
+                ];
 
-            $param_data = $members->buildParam($param);	
-            dump($param_data);
-        	}
+            $data = $members->buildParam($param);
+            dump($data);
     }
 }

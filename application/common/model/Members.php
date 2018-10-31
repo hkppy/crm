@@ -12,7 +12,7 @@ class Members extends Model
         $data=[];
         if (is_array($array)&&!empty($array)){
             foreach( $array as $item=>$value ){
-                $data[$item] = $this->request->param($value);
+                $data[$item] = request()->param($value);
             }
         }
         return $data;

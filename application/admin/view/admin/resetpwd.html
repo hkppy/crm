@@ -13,19 +13,19 @@
 	<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>密匙：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text"  placeholder="" id="key" name="key">
+				{$list.salt|md5}
 			</div>
 	</div>
 	<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>新密码：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="password" class="input-text"  placeholder="" id="new_password" name="new_password">
+				<input type="password" class="input-text"  placeholder="" id="password" name="password">
 			</div>
 	</div>	
 	<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>再次输入新密码：</label>
+			<label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>请复制密匙到此输入框：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="password" class="input-text" value="" placeholder="" id="confirm_password" name="confirm_password">
+				<input type="text" class="input-text" value="" placeholder="" id="salt" name="salt">
 			</div>
 	</div>	
 	<div class="row cl">
@@ -51,32 +51,27 @@ $(function(){
 
 	$("#form-admin-add").validate({
 		rules:{
-			key:{
-				required:true
+			password: {
+		        required: true,
+		        minlength: 5,
+		        maxlength:32
+		    },
+		    salt:{
+				required:true,
+				minlength: 32
 			},
-	    new_password: {
-	        required: true,
-	        minlength: 5
-	    },
-	    confirm_password: {
-	      required: true,
-	      minlength: 5,
-	      equalTo: "#new_password"
-	    },		
+	
 		},
 		messages: {
-			key: {
-	        required: "请输入密匙",
-	      },
-	      new_password: {
-	        required: "请输入密码",
-	        minlength: "密码长度不能小于 5 个字母"
-	      },
-	      confirm_password: {
+			password: {
 	        required: "请输入密码",
 	        minlength: "密码长度不能小于 5 个字母",
-	        equalTo: "两次密码输入不一致"
-	      },
+	        maxlength: "密码长度不能小于 32 个字母",
+	      	},
+	      	salt: {
+	        required: "请输入密匙",
+	        minlength: "密匙长度不能小于 32个字母"
+	      	},
 		},	
 		onkeyup:false,
 		focusCleanup:true,

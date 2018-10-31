@@ -19,7 +19,7 @@ class SellerLevel extends Common
     }
     public function add()
     {   
-        $seller_level=SellerLevelModel;
+        $seller_level=new SellerLevelModel;
     	$list = $seller_level->select();
     	//dump($list);
     	$this->assign('list',$list);

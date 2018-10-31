@@ -1,4 +1,4 @@
-<?php /*a:4:{s:84:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\customer\shop_list.html";i:1540778258;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540782757;s:92:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_column_title.html";i:1538040490;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\footer_js.html";i:1538015651;}*/ ?>
+<?php /*a:4:{s:84:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\customer\shop_list.html";i:1540965923;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540782757;s:92:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_column_title.html";i:1538040490;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\footer_js.html";i:1538015651;}*/ ?>
 ﻿<!DOCTYPE HTML>
 <html>
 <head>
@@ -47,7 +47,6 @@
 			
 			<?php endif; ?>
 			
-			
 			<i class="Hui-iconfont">&#xe600;</i> 添加客户消费信息</a></span> 
 			<span class="l">共用时：<?php echo '<strong>'.Debug::getRangeTime('begin','end').'<strong>s'; ?></span> 
 			<span class="r">共有数据：<strong><?php echo htmlspecialchars($count); ?></strong> 条</span> 
@@ -82,7 +81,7 @@
 				<td><?php echo htmlspecialchars($vo['create_time']); ?></td>
 				<td class="td-manage"> 
 					<a title="编辑" href="javascript:;" onclick="member_edit('编辑','<?php echo url('customer_shop_edit',array('id'=>$vo['id'])); ?>','4','800','600')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> 
-					<a title="删除" href="javascript:;" onclick="member_del(this,'<?php echo htmlspecialchars($vo['id']); ?>')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a
+					<!-- <a title="删除" href="javascript:;" onclick="member_del(this,'<?php echo htmlspecialchars($vo['id']); ?>')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a -->
 				</td>
 					
 			</tr>

@@ -1,4 +1,4 @@
-<?php /*a:4:{s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\admin\admin_list.html";i:1540452533;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540782757;s:92:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_column_title.html";i:1538040490;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\footer_js.html";i:1538015651;}*/ ?>
+<?php /*a:4:{s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\admin\admin_list.html";i:1540870361;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540782757;s:92:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_column_title.html";i:1538040490;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\footer_js.html";i:1538015651;}*/ ?>
 ﻿<!DOCTYPE HTML>
 <html>
 <head>
@@ -76,7 +76,7 @@
 					<?php else: ?> <a onClick="admin_start(this,<?php echo htmlspecialchars($vo['id']); ?>)" href="javascript:;" title="启用" style="text-decoration:none"><i class="Hui-iconfont">&#xe615;</i></a>
 					<?php endif; endif; ?>
 					<a title="编辑" href="javascript:;" onclick="admin_edit('管理员编辑','<?php echo url('admin_edit',array('id'=>$vo['id'])); ?>','<?php echo htmlspecialchars($vo['id']); ?>','800','600')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> 
-					<a style="text-decoration:none" class="ml-5" onClick="change_password('修改密码','<?php echo url('admin_change_password',array('id'=>$vo['id'])); ?>','1','800','600')" href="javascript:;" title="修改密码"><i class="Hui-iconfont">&#xe63f;</i></a> 
+					<a style="text-decoration:none" class="ml-5" onClick="change_password('密码重置','<?php echo url('resetpwd',array('id'=>$vo['id'])); ?>','1','800','600')" href="javascript:;" title="密码重置"><i class="Hui-iconfont">&#xe63f;</i></a> 
 					<?php if($vo['id'] != '1'): ?>
 					<a title="删除" href="javascript:;" onclick="admin_del(this,'<?php echo htmlspecialchars($vo['id']); ?>')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
 					<?php endif; ?>

@@ -1,4 +1,4 @@
-<?php /*a:3:{s:79:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\customer\edit.html";i:1540452619;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540782757;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\footer_js.html";i:1538015651;}*/ ?>
+<?php /*a:4:{s:79:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\customer\edit.html";i:1540965973;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_js.html";i:1540782757;s:92:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\header_column_title.html";i:1538040490;s:82:"C:\phpStudy2018\PHPTutorial\WWW\tp5.1\application\admin\view\public\footer_js.html";i:1538015651;}*/ ?>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -27,7 +27,14 @@
 <meta name="description" content="<?php echo htmlspecialchars((isset($list['description']) && ($list['description'] !== '')?$list['description']:"简介，待定义")); ?>">
 </head>
 <body>
-
+<nav class="breadcrumb">
+	<i class="Hui-iconfont">&#xe67f;</i> 首页 
+	<?php if(isset($common_column_title['one_title'])): ?>
+	<span class="c-gray en">&gt;</span> <?php echo htmlspecialchars($common_column_title['one_title']); endif; if(isset($common_column_title['two_title'])): ?>
+	<span class="c-gray en">&gt;</span> <?php echo htmlspecialchars($common_column_title['two_title']); endif; ?>
+	
+	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+</nav>
 <div class="page-container">
 	<div class="form form-horizontal" >
 		<div id="tab-system" class="HuiTab">
@@ -112,51 +119,61 @@
 			</div>
 		</div>
 		</div>
-
+			
 
 			<div class="tabCon">
 				<form action="" method="post" class="form form-horizontal" id="form-member-add">
 					<input type="hidden" name="id" value="<?php echo htmlspecialchars($list['id']); ?>">
-					
-					
-				<div class="row cl">
+
+			<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-1">
 						<span class="c-red">*</span>
 						姓名：</label>
 					<div class="formControls col-xs-8 col-sm-9">
 						<input type="text" class="input-text" value="<?php echo htmlspecialchars($list['realname']); ?>" placeholder="" id="realname" name="realname">
 					</div>
-				</div>
-				<div class="row cl">
+			</div>
+			<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-1">
 						<span class="c-red">*</span>
-						QQ：</label>
+						昵称：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" class="input-text" value="<?php echo htmlspecialchars($list['qq']); ?>" placeholder="" id="qq" name="qq">
+						<input type="text" class="input-text" value="<?php echo htmlspecialchars($list['nickname']); ?>" placeholder="" id="nickname" name="nickname">
 					</div>
+			</div>
+			<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-1"><span class="c-red">*</span>联系方式：</label>
+			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+				<div class="radio-box">
+					<input type="radio"  value="1" name="lxfs"  <?php if($list['lxfs'] == '1'): ?>checked="checked"<?php endif; ?>>
+					<label for="sex-1">微信</label>
 				</div>
-				<div class="row cl">
+				<div class="radio-box">
+					<input type="radio" value="2" name="lxfs" <?php if($list['lxfs'] == '2'): ?>checked="checked"<?php endif; ?>>
+					<label for="sex-2">QQ</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" value="3" name="lxfs" <?php if($list['lxfs'] == '3'): ?>checked="checked"<?php endif; ?>>
+					<label for="sex-3">手机</label>
+				</div>
+			</div>
+			</div>	
+			<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-1">
 						<span class="c-red">*</span>
-						微信：</label>
+						联系号码：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" class="input-text" value="<?php echo htmlspecialchars($list['weixin']); ?>" placeholder="" id="weixin" name="weixin">
+						<input type="text" class="input-text" value="<?php echo htmlspecialchars($list['lxfs_value']); ?>" placeholder="" id="lxfs_value" name="lxfs_value">
 					</div>
-				</div>
-				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-1">
-						<span class="c-red">*</span>
-						手机：</label>
-					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" class="input-text" value="<?php echo htmlspecialchars($list['phone']); ?>" placeholder="" id="phone" name="phone">
-					</div>
-				</div>
+			</div>					
+
+
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-1">
 						<span class="c-red">*</span>
 						密码：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="password" class="input-text" value="" placeholder="为空则不修改" id="password" name="password">
+						<input type="text" class="input-text" value="<?php echo htmlspecialchars($list['password']); ?>" placeholder="为空则不修改" id="password" name="password">
 					</div>
 				</div>
 				<div class="row cl">
@@ -167,13 +184,11 @@
 			</form>
 			</div>
 			<div class="tabCon">
-				<form class="form form-horizontal" id="form-admin-add2">
-		<input type="hidden" name="cid" value="<?php echo htmlspecialchars($cid); ?>">
-		<input type="hidden" name="id" value="<?php echo htmlspecialchars($info['id']); ?>">
-
-		<div class="row cl">
-		<label class="form-label col-xs-4 col-sm-1"><span class="c-red">*</span>生日历法：</label>
-		<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+			<form class="form form-horizontal" id="form-admin-add2">
+			<input type="hidden" name="id" value="<?php echo htmlspecialchars($id); ?>">
+			<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-1"><span class="c-red">*</span>生日历法：</label>
+			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
 			<div class="radio-box">
 				<input type="radio"  value="1" name="lifa"  <?php if($info['lifa'] == '1'): ?>checked="checked"<?php endif; ?>>
 				<label for="sex-1">阳历</label>
@@ -181,15 +196,15 @@
 			<div class="radio-box">
 				<input type="radio" value="2" name="lifa" <?php if($info['lifa'] == '2'): ?>checked="checked"<?php endif; ?>>
 				<label for="sex-2">阴历</label>
+				</div>
 			</div>
-		</div>
-		</div>
-	<div class="row cl">
-		<label class="form-label col-xs-4 col-sm-1"><span class="c-red">*</span>出生日期：</label>
-		<div class="formControls col-xs-8 col-sm-9">
-			<input type="text" class="input-text" autocomplete="off" id="birthday" name="birthday"  value="<?php if($info['birthday'] != ''): ?><?php echo htmlspecialchars(date('Y-m-d h:i:s',!is_numeric($info['birthday'])? strtotime($info['birthday']) : $info['birthday'])); endif; ?>">
-		</div>
-	</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-1"><span class="c-red">*</span>出生日期：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" autocomplete="off" id="birthday" name="birthday"  value="<?php if($info['birthday'] != ''): ?><?php echo htmlspecialchars(date('Y-m-d h:i:s',!is_numeric($info['birthday'])? strtotime($info['birthday']) : $info['birthday'])); endif; ?>">
+				</div>
+			</div>
 	<script src="/../static/style/laydate/laydate.js"></script>
 	<script>
 	//执行一个laydate实例
@@ -253,18 +268,12 @@ $(function(){
 	});
 		$("#form-member-add").validate({
 		rules:{
-			qq:{
-				required:true,
-				minlength:2,
-				maxlength:16
-			},
-			weixin:{
+			lxfs:{
 				required:true,
 			},
-			phone:{
+			lxfs_value:{
 				required:true,
-				isMobile:true,
-			},
+			}
 			
 		},
 		onkeyup:false,
@@ -318,7 +327,7 @@ $(function(){
 				data: $('#form-admin-add').serialize(), //将该表单序列化
 				success: function(data){
 					console.log(data);
-					if(data.status==1){
+					if(data.code==1){
 						layer.msg(data.msg,{icon:1,time:1000});
 					}else{
 						layer.msg(data.msg,{icon:2,time:1000});
@@ -326,7 +335,7 @@ $(function(){
 					
 				},
                 error: function(XmlHttpRequest, textStatus, errorThrown){
-					layer.msg('error!',{icon:1,time:1000});
+					layer.msg('error!',{icon:2,time:1000});
 				}
 			});
 			//var index = parent.layer.getFrameIndex(window.name);

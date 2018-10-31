@@ -1,6 +1,6 @@
 {include file="public/header_js" /}
 <body>
-
+{include file="public/header_column_title" /}
 <div class="page-container">
 	<div class="form form-horizontal" >
 		<div id="tab-system" class="HuiTab">
@@ -87,51 +87,61 @@
 			</div>
 		</div>
 		</div>
-
+			
 
 			<div class="tabCon">
 				<form action="" method="post" class="form form-horizontal" id="form-member-add">
 					<input type="hidden" name="id" value="{$list.id}">
-					
-					
-				<div class="row cl">
+
+			<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-1">
 						<span class="c-red">*</span>
 						姓名：</label>
 					<div class="formControls col-xs-8 col-sm-9">
 						<input type="text" class="input-text" value="{$list.realname}" placeholder="" id="realname" name="realname">
 					</div>
-				</div>
-				<div class="row cl">
+			</div>
+			<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-1">
 						<span class="c-red">*</span>
-						QQ：</label>
+						昵称：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" class="input-text" value="{$list.qq}" placeholder="" id="qq" name="qq">
+						<input type="text" class="input-text" value="{$list.nickname}" placeholder="" id="nickname" name="nickname">
 					</div>
+			</div>
+			<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-1"><span class="c-red">*</span>联系方式：</label>
+			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+				<div class="radio-box">
+					<input type="radio"  value="1" name="lxfs"  {if $list['lxfs'] == '1' }checked="checked"{/if}>
+					<label for="sex-1">微信</label>
 				</div>
-				<div class="row cl">
+				<div class="radio-box">
+					<input type="radio" value="2" name="lxfs" {if $list['lxfs'] == '2' }checked="checked"{/if}>
+					<label for="sex-2">QQ</label>
+				</div>
+				<div class="radio-box">
+					<input type="radio" value="3" name="lxfs" {if $list['lxfs'] == '3' }checked="checked"{/if}>
+					<label for="sex-3">手机</label>
+				</div>
+			</div>
+			</div>	
+			<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-1">
 						<span class="c-red">*</span>
-						微信：</label>
+						联系号码：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" class="input-text" value="{$list.weixin}" placeholder="" id="weixin" name="weixin">
+						<input type="text" class="input-text" value="{$list.lxfs_value}" placeholder="" id="lxfs_value" name="lxfs_value">
 					</div>
-				</div>
-				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-1">
-						<span class="c-red">*</span>
-						手机：</label>
-					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" class="input-text" value="{$list.phone}" placeholder="" id="phone" name="phone">
-					</div>
-				</div>
+			</div>					
+
+
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-1">
 						<span class="c-red">*</span>
 						密码：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="password" class="input-text" value="" placeholder="为空则不修改" id="password" name="password">
+						<input type="text" class="input-text" value="{$list.password}" placeholder="为空则不修改" id="password" name="password">
 					</div>
 				</div>
 				<div class="row cl">
@@ -142,13 +152,11 @@
 			</form>
 			</div>
 			<div class="tabCon">
-				<form class="form form-horizontal" id="form-admin-add2">
-		<input type="hidden" name="cid" value="{$cid}">
-		<input type="hidden" name="id" value="{$info.id}">
-
-		<div class="row cl">
-		<label class="form-label col-xs-4 col-sm-1"><span class="c-red">*</span>生日历法：</label>
-		<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+			<form class="form form-horizontal" id="form-admin-add2">
+			<input type="hidden" name="id" value="{$id}">
+			<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-1"><span class="c-red">*</span>生日历法：</label>
+			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
 			<div class="radio-box">
 				<input type="radio"  value="1" name="lifa"  {if $info['lifa'] == '1' }checked="checked"{/if}>
 				<label for="sex-1">阳历</label>
@@ -156,15 +164,15 @@
 			<div class="radio-box">
 				<input type="radio" value="2" name="lifa" {if $info['lifa'] == '2' }checked="checked"{/if}>
 				<label for="sex-2">阴历</label>
+				</div>
 			</div>
-		</div>
-		</div>
-	<div class="row cl">
-		<label class="form-label col-xs-4 col-sm-1"><span class="c-red">*</span>出生日期：</label>
-		<div class="formControls col-xs-8 col-sm-9">
-			<input type="text" class="input-text" autocomplete="off" id="birthday" name="birthday"  value="{if $info['birthday'] != '' }{$info.birthday|date='Y-m-d h:i:s'}{/if}">
-		</div>
-	</div>
+			</div>
+			<div class="row cl">
+				<label class="form-label col-xs-4 col-sm-1"><span class="c-red">*</span>出生日期：</label>
+				<div class="formControls col-xs-8 col-sm-9">
+					<input type="text" class="input-text" autocomplete="off" id="birthday" name="birthday"  value="{if $info['birthday'] != '' }{$info.birthday|date='Y-m-d h:i:s'}{/if}">
+				</div>
+			</div>
 	<script src="__STATIC__/style/laydate/laydate.js"></script>
 	<script>
 	//执行一个laydate实例
@@ -224,18 +232,12 @@ $(function(){
 	});
 		$("#form-member-add").validate({
 		rules:{
-			qq:{
-				required:true,
-				minlength:2,
-				maxlength:16
-			},
-			weixin:{
+			lxfs:{
 				required:true,
 			},
-			phone:{
+			lxfs_value:{
 				required:true,
-				isMobile:true,
-			},
+			}
 			
 		},
 		onkeyup:false,
@@ -289,7 +291,7 @@ $(function(){
 				data: $('#form-admin-add').serialize(), //将该表单序列化
 				success: function(data){
 					console.log(data);
-					if(data.status==1){
+					if(data.code==1){
 						layer.msg(data.msg,{icon:1,time:1000});
 					}else{
 						layer.msg(data.msg,{icon:2,time:1000});
@@ -297,7 +299,7 @@ $(function(){
 					
 				},
                 error: function(XmlHttpRequest, textStatus, errorThrown){
-					layer.msg('error!',{icon:1,time:1000});
+					layer.msg('error!',{icon:2,time:1000});
 				}
 			});
 			//var index = parent.layer.getFrameIndex(window.name);
